@@ -29,23 +29,8 @@ The app is designed to be clean, fast, and responsive across different screen si
 - **Clean Architecture**: Separation of concerns (UI, logic, and data layers).
 - **Reusable Widgets**: Built for scalability and maintainability.
 
----
 
-## 📂 Project Structure
 
-```bash
-lib/
-├── core/
-│   ├── constants/         # App constants (assets paths, dummy data)
-│   ├── utils/             # SizeConfig for responsive design
-│   ├── widgets/           # Reusable UI components (carousel, match card, group widgets)
-├── features/
-│   ├── main/              # Main screen (matches, news, etc.)
-│   ├── bottom_nav/        # Bottom navigation widget
-├── models/                # Data models (e.g., TeamModel)
-├── app.dart               # Main MaterialApp setup
-└── main.dart              # App entry point
-```
 
 ---
 
@@ -61,7 +46,7 @@ lib/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/futzone.git
+   git clone https://github.com/Hamzashensho/football_app.git
    cd futzone
    ```
 
