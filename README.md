@@ -63,9 +63,9 @@ The app is designed to be clean, fast, and responsive across different screen si
 ---
 
 ## 📸 Screenshots
-| Home Page | Match Details | News Section |
-|:---------:|:-------------:|:------------:|
-| ![home_screen](https://github.com/user-attachments/assets/2a0252fe-86d2-42ec-bfc1-2a4a73458996) | ![match_screen](https://github.com/user-attachments/assets/8522458b-df04-44cc-a004-f9c231c39829)| ![news_screen](https://github.com/user-attachments/assets/fae0db3e-c50c-480c-9d29-3f5b2bc92d8e)
+|                                            Home Page                                            |                                          Match Details                                           |                                          News Section                                           |
+|:-----------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+| ![home_screen](https://github.com/user-attachments/assets/2a0252fe-86d2-42ec-bfc1-2a4a73458996) | ![match_screen](https://github.com/user-attachments/assets/8522458b-df04-44cc-a004-f9c231c39829) | ![news_screen](https://github.com/user-attachments/assets/fae0db3e-c50c-480c-9d29-3f5b2bc92d8e) |
 |
 
 
