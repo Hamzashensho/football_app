@@ -27,20 +27,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return IntroductionScreen(
       pages: [
         PageViewModel(
-          titleWidget: buildText("Train Your Squad", false),
-          bodyWidget: buildText("Manage your dream team like a pro.", true),
+          titleWidget: buildText(text: 'Train Your Squad',isBody:  false),
+          bodyWidget: buildText(text: 'Manage your dream team like a pro.', isBody: true),
           backgroundImage: Assets.onBoarding1,
         ),
         PageViewModel(
-          titleWidget: buildText("Join Live Matches", false),
-          bodyWidget: buildText("Compete and rise in the global ranks.", true),
+          titleWidget: buildText(text: 'Join Live Matches', isBody: false),
+          bodyWidget: buildText(text: 'Compete and rise in the global ranks.', isBody: true),
           backgroundImage: Assets.onBoarding2,
         ),
         PageViewModel(
-          titleWidget: buildText("Track Player Stats", false),
-          bodyWidget: buildText(
-            "Analyze performance with detailed stats.",
-            true,
+          titleWidget: buildText(text: 'Track Player Stats', isBody: false),
+          bodyWidget: buildText(text:
+            'Analyze performance with detailed stats.',
+            isBody: true,
           ),
           backgroundImage: Assets.onBoarding3,
         ),
@@ -48,7 +48,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       onDone: () => Navigator.pushReplacementNamed(context, RoutePaths.register),
       showSkipButton: true,
       skip: Text(
-        "Skip",
+        'Skip',
         style: TextStyle(
           color: Colors.white,
           fontSize: SizeConfig.textMultiplier * 2,
@@ -60,7 +60,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         size: SizeConfig.imageSizeMultiplier * 7,
       ),
       done: Text(
-        "Get Started",
+        'Get Started',
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -72,7 +72,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           SizeConfig.widthMultiplier * 2,
           SizeConfig.heightMultiplier * 2,
         ),
-        color: Colors.grey,
         activeSize: Size(
           SizeConfig.widthMultiplier * 8,
           SizeConfig.heightMultiplier,
@@ -87,7 +86,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Text buildText(String text, bool isBody) {
+  Text buildText({required String text, required bool isBody}) {
     return Text(
       text,
       style: TextStyle(

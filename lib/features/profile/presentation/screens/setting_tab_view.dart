@@ -19,21 +19,21 @@ class SettingTabView extends StatelessWidget {
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
 
             // Notification Settings
-            SectionTitle(title: "Notification Settings"),
-            NotificationToggle(title: " Receive notifications for your favorite team"),
-            NotificationToggle(title: " Receive app notifications"),
+            const SectionTitle(title: 'Notification Settings'),
+            const NotificationToggle(title: ' Receive notifications for your favorite team'),
+            const NotificationToggle(title: ' Receive app notifications'),
 
             SizedBox(height: 3 * SizeConfig.heightMultiplier),
 
             // Account Settings
-            SectionTitle(title: "Account Settings"),
+            const SectionTitle(title: 'Account Settings'),
             AccountOption(
-              title: "Change Password",
+              title: 'Change Password',
               icon: Icons.lock_outline,
               onTap: () {},
             ),
             AccountOption(
-              title: "Delete my account",
+              title: 'Delete my account',
               icon: Icons.delete_outline,
               onTap: () {},
               isDanger: true,

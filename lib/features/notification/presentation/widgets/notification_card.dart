@@ -36,7 +36,7 @@ class NotificationCard extends StatelessWidget {
                       ? Icons.favorite
                       : Icons.favorite_border,
                   color: notification.isFavorite
-                      ?Color(0xFF9C0101):Colors.black,
+                      ?const Color(0xFF9C0101):Colors.black,
                 ),
               ],
             ),

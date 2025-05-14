@@ -27,13 +27,13 @@ class _LoginTabViewState extends State<LoginTabView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AccountTextField(
-            hintText: "Email",
+          const AccountTextField(
+            hintText: 'Email',
             prefixImagePath: Assets.mailIcon,
           ),
           SizedBox(height: SizeConfig.heightMultiplier*2),
           AccountTextField(
-            hintText: "Password",
+            hintText: 'Password',
             obscureText: !showPassword,
             prefixImagePath: Assets.passwordIcon,
             suffixIcon:
@@ -50,7 +50,7 @@ class _LoginTabViewState extends State<LoginTabView> {
           TextButton(
             onPressed: () {},
             child: Text(
-              "Forgot your password?",
+              'Forgot your password?',
               style: TextStyle(
                 color: Colors.cyanAccent,
                 fontSize: SizeConfig.textMultiplier * 1.7,
@@ -62,26 +62,26 @@ class _LoginTabViewState extends State<LoginTabView> {
             onPressed: () {
               Navigator.pushReplacementNamed(context, RoutePaths.homeScreen);
             },
-            title: "Log in",
+            title: 'Log in',
           ),
           SizedBox(height: SizeConfig.heightMultiplier*5),
           Row(
             children: [
-              CustomDivider(),
+              const CustomDivider(),
               Text(
-                "Sign in with your social account",
+                'Sign in with your social account',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: SizeConfig.textMultiplier * 2,
                 ),
               ),
-              CustomDivider(),
+              const CustomDivider(),
             ],
           ),
           SizedBox(height: SizeConfig.heightMultiplier*3),
           AccountButton(
             onPressed: () {  },
-            title: "Log in with Google",
+            title: 'Log in with Google',
             //imageRightPadding: SizeConfig.widthMultiplier*5.8,
             foregroundColor: Colors.white,
             iconImagePath: Assets.googleIcon,
@@ -92,7 +92,7 @@ class _LoginTabViewState extends State<LoginTabView> {
             onPressed: () {  },
             //imageRightPadding: SizeConfig.widthMultiplier*0.1,
             labelLeftPadding: SizeConfig.widthMultiplier*7,
-            title: "Log in with Facebook",
+            title: 'Log in with Facebook',
             foregroundColor: Colors.white,
             iconImagePath: Assets.facebookIcon,
 

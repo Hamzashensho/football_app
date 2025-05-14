@@ -4,7 +4,6 @@ import 'package:sport_app_user/core/utils/size_config.dart';
 import 'package:sport_app_user/core/widget/image/carousel_slider.dart';
 import 'package:sport_app_user/core/widget/match/match_card.dart';
 import 'package:sport_app_user/core/widget/match/match_group.dart';
-import 'package:sport_app_user/features/home/presentation/widgets/home_page_header.dart';
 
 
 class MainScreen extends StatelessWidget {

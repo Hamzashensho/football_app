@@ -23,7 +23,7 @@ class BottomNav extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(SizeConfig.heightMultiplier * 2),
             border: Border.all(color: Colors.white10),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 10,

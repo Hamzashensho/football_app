@@ -17,15 +17,11 @@ class AppTheme {
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      colorScheme: ColorScheme.light(
-        primary: const Color(0xFF1A1A40),
-        secondary: const Color(0xFF00CED1),
-        surface: const Color(0xFFFFFFFF),
+      colorScheme: const ColorScheme.light(
+        primary: Color(0xFF1A1A40),
+        secondary: Color(0xFF00CED1),
         error: Colors.redAccent,
-        onPrimary: Colors.white,
-        onSecondary: Colors.black,
         onSurface: Colors.black87,
-        onError: Colors.white,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -39,7 +35,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xFF1A1A40),
-          textStyle: TextStyle(color: const Color(0xFF00CED1))
+          textStyle: const TextStyle(color: Color(0xFF00CED1))
         ),
       ),
       cardTheme: const CardTheme(

@@ -23,7 +23,7 @@ class TeamRankingCard extends StatelessWidget {
             color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(SizeConfig.widthMultiplier * 2),
           ),
-          child: Center(child: Text("${team.order}°",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+          child: Center(child: Text('${team.order}°',style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
         ) ,
         title: Row(
           children: [

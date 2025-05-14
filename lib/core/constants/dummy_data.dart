@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:sport_app_user/core/constants/assets.dart';
 
 class TeamModel {
@@ -10,7 +9,7 @@ class TeamModel {
 }
 
 final List<TeamModel> dummyTeams = [
-  TeamModel('Athletic Club Bilbao', Assets.bilbaoIcon, "1"),
+  TeamModel('Athletic Club Bilbao', Assets.bilbaoIcon, '1'),
   TeamModel('FC Barcelona', Assets.fcbIcon, '2'),
   TeamModel('Atlético Madrid', Assets.atleticoIcon, '3'),
   TeamModel('Deportivo La Coruña', Assets.realIcon, '1'),
@@ -58,15 +57,15 @@ class NewsModel {
 
 List<NewsModel> dummyNewsList = [
   NewsModel(
-    title:"Special Offer: 50% Off New Football Boots!",
+    title:'Special Offer: 50% Off New Football Boots!',
     imageTitle: 'Special Offer',
     description:
-        "A dynamic football news graphic showcasing the launch of a new generation of football boots. The image features sleek black boots with turquoise accents standing proudly on a lush green pitch. The bold text announces the exciting news of their release, making it perfect for promotional campaigns or social media ads.",
+        'A dynamic football news graphic showcasing the launch of a new generation of football boots. The image features sleek black boots with turquoise accents standing proudly on a lush green pitch. The bold text announces the exciting news of their release, making it perfect for promotional campaigns or social media ads.',
     image: Assets.newsImage1,
     dateTime: DateTime.now(),
   ),
   NewsModel(
-    title:"Grand Opening: New Football Stadium!",
+    title:'Grand Opening: New Football Stadium!',
     imageTitle: 'Grand Opening',
     description:
         "A vibrant news announcement highlighting the official opening of a state-of-the-art football stadium. Captured under a bright blue sky, the photo shows tiered blue seats, a pristine green field, and a modern roof structure. This image perfectly captures the excitement and grandeur of the stadium's debut.",
@@ -102,13 +101,13 @@ final List<NotificationModel> dummyNotifications = [
   NotificationModel(
     title: 'End of match: Argentina vs Spain',
     subtitle: 'Junior Championship 12 to 14 years',
-    dateTime: DateTime.now().subtract(Duration(days: 1)),
+    dateTime: DateTime.now().subtract(const Duration(days: 1)),
     image: Assets.souIcon
   ),
   NotificationModel(
     title: 'New goal for Spain against Australia',
     subtitle: 'Junior Championship 12 to 14 years',
-    dateTime: DateTime.now().subtract(Duration(days: 1)),
+    dateTime: DateTime.now().subtract(const Duration(days: 1)),
       image: Assets.notGoalIcon,
     isFavorite: true,
 
@@ -116,21 +115,21 @@ final List<NotificationModel> dummyNotifications = [
   NotificationModel(
     title: 'Red card for Argentina against China',
     subtitle: 'Junior Championship 12 to 14 years',
-    dateTime: DateTime.now().subtract(Duration(days: 1)),
+    dateTime: DateTime.now().subtract(const Duration(days: 1)),
       image: Assets.notRedCardIcon
 
   ),
   NotificationModel(
     title: 'Yellow card for Argentina against China',
     subtitle: 'Junior Championship 12 to 14 years',
-    dateTime: DateTime.now().subtract(Duration(days: 1)),
+    dateTime: DateTime.now().subtract(const Duration(days: 1)),
       image: Assets.notYellowCardIcon
 
   ),
   NotificationModel(
     title: 'Kickoff: Argentina vs Spain',
     subtitle: 'Junior Championship 12 to 14 years',
-    dateTime: DateTime.now().subtract(Duration(days: 1)),
+    dateTime: DateTime.now().subtract(const Duration(days: 1)),
       image: Assets.souIcon
 
   ),

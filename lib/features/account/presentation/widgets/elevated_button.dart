@@ -30,7 +30,7 @@ class AccountButton extends StatelessWidget {
                 onPressed: onPressed,
                 icon: Padding(
                   padding:  EdgeInsets.only(left: imageRightPadding??SizeConfig.widthMultiplier*8),
-                  child: Image.asset(iconImagePath??"",height: SizeConfig.heightMultiplier*3.5),
+                  child: Image.asset(iconImagePath??'',height: SizeConfig.heightMultiplier*3.5),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: foregroundColor

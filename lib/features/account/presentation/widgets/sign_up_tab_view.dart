@@ -24,63 +24,62 @@ class _SignUpTabViewState extends State<SignUpTabView> {
         horizontal: SizeConfig.widthMultiplier * 6,),
       child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AccountTextField(
-             hintText: "First name",
+            const AccountTextField(
+             hintText: 'First name',
               prefixImagePath: Assets.userIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText:"Last name",
+            const AccountTextField(
+              hintText:'Last name',
               prefixImagePath: Assets.userIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Date of birth",
+            const AccountTextField(
+              hintText: 'Date of birth',
               prefixImagePath: Assets.dateIcon,
               isDateTextField: true,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Phone",
+            const AccountTextField(
+              hintText: 'Phone',
               prefixImagePath: Assets.telephoneIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Email",
+            const AccountTextField(
+              hintText: 'Email',
               prefixImagePath: Assets.mailIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Confirm email",
+            const AccountTextField(
+              hintText: 'Confirm email',
               prefixImagePath: Assets.mailIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Country",
+            const AccountTextField(
+              hintText: 'Country',
               prefixImagePath: Assets.countryIcon,
               isCountryPicker: true,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "State province",
+            const AccountTextField(
+              hintText: 'State province',
               prefixImagePath: Assets.maritalStatusIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Municipality",
+            const AccountTextField(
+              hintText: 'Municipality',
               prefixImagePath: Assets.homeIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            AccountTextField(
-              hintText: "Postal Code/Zip Code",
+            const AccountTextField(
+              hintText: 'Postal Code/Zip Code',
               prefixImagePath: Assets.mailBoxIcon,
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
             AccountTextField(
-              hintText: "Password",
+              hintText: 'Password',
               obscureText: !showFirstPassword,
               prefixImagePath: Assets.passwordIcon,
               suffixIcon:
@@ -95,7 +94,7 @@ class _SignUpTabViewState extends State<SignUpTabView> {
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
             AccountTextField(
-              hintText: "Confirm password",
+              hintText: 'Confirm password',
               obscureText: !showSecondPassword,
               prefixImagePath: Assets.passwordIcon,
               suffixIcon:
@@ -109,15 +108,15 @@ class _SignUpTabViewState extends State<SignUpTabView> {
               },
             ),
             SizedBox(height: SizeConfig.heightMultiplier*2),
-            Text("Team (Optional)",style: TextStyle(color:Colors.white,fontSize: SizeConfig.textMultiplier*1.8),),
-            SimpleTeamDropdown(),
+            Text('Team (Optional)',style: TextStyle(color:Colors.white,fontSize: SizeConfig.textMultiplier*1.8),),
+            const SimpleTeamDropdown(),
             SizedBox(height: SizeConfig.heightMultiplier*2),
 
             AccountButton(
               onPressed: () {
                 // Handle sign up
               },
-              title: "Sign up",
+              title: 'Sign up',
             ),
           ],
         ),

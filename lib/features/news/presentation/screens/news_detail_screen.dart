@@ -11,7 +11,7 @@ class NewsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
+    final String formattedTime = DateFormat('h:mm a').format(dateTime);
 
     return Scaffold(
       body: Column(
@@ -35,7 +35,7 @@ class NewsDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${dateTime.year}/${dateTime.month}/${dateTime.day}",
+                  '${dateTime.year}/${dateTime.month}/${dateTime.day}',
                   style: TextStyle(
                     fontSize: SizeConfig.textMultiplier * 2,
                     color: Colors.black,
@@ -54,7 +54,7 @@ class NewsDetailsScreen extends StatelessWidget {
           ),
 
           SizedBox(height: SizeConfig.heightMultiplier * 1),
-          Divider(thickness: 1, color: Colors.teal),
+          const Divider(thickness: 1, color: Colors.teal),
 
           Expanded(
             child: Padding(

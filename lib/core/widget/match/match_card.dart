@@ -4,8 +4,13 @@ import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/utils/size_config.dart';
 
 class MatchCard extends StatelessWidget {
-  final String date, time, stadium, group, status;
-  final TeamModel teamA, teamB;
+  final String date;
+  final String time;
+  final String stadium;
+  final String group;
+  final String status;
+  final TeamModel teamA;
+  final TeamModel teamB;
   final String score;
 
   const MatchCard({
@@ -72,14 +77,13 @@ class MatchCard extends StatelessWidget {
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*2, vertical: SizeConfig.heightMultiplier*1.3),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     group,
                     style:  TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize:  SizeConfig.textMultiplier*1.4,
-                      color: Color(0xFF5B2E91),
+                      color: const Color(0xFF5B2E91),
                     ),
                   ),
                   if (status.isNotEmpty)

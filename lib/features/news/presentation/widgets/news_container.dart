@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' ;
 import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/utils/size_config.dart';
 
@@ -102,15 +101,15 @@ class NewsContainer extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "See More",
+                      const Text(
+                        'See More',
                         style: TextStyle(
                           color: Colors.teal,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+                        '${dateTime.day}/${dateTime.month}/${dateTime.year}',
                         style: TextStyle(
                           color: Colors.black45,
                           fontSize: SizeConfig.textMultiplier * 1.5,

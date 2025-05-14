@@ -6,8 +6,10 @@ import 'package:sport_app_user/core/utils/size_config.dart';
 import 'package:sport_app_user/features/match_detai/presentation/widgets/time_progress_indecator.dart';
 
 class MatchHeader extends StatelessWidget {
-  final TeamModel teamA, teamB;
-  final String stadium, group;
+  final TeamModel teamA;
+  final TeamModel teamB;
+  final String stadium;
+  final String group;
   final String score;
 
   const MatchHeader({
@@ -32,7 +34,7 @@ class MatchHeader extends StatelessWidget {
         Positioned(
           top: SizeConfig.heightMultiplier * 3.5,
           left: SizeConfig.widthMultiplier * 6,
-          child: Icon(Icons.arrow_back, color: Colors.white),
+          child: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         Positioned.fill(
           child: Column(
@@ -54,7 +56,7 @@ class MatchHeader extends StatelessWidget {
                         height: SizeConfig.heightMultiplier * 5,
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier * 1.8),
-                      Text(teamA.name, style: TextStyle(color: Colors.white)),
+                      Text(teamA.name, style: const TextStyle(color: Colors.white)),
                     ],
                   ),
                   SizedBox(width: SizeConfig.widthMultiplier * 8),
@@ -80,7 +82,7 @@ class MatchHeader extends StatelessWidget {
                         height: SizeConfig.heightMultiplier * 5,
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier * 1.8),
-                      Text(teamB.name, style: TextStyle(color: Colors.white)),
+                      Text(teamB.name, style: const TextStyle(color: Colors.white)),
                     ],
                   ),
                 ],
@@ -90,7 +92,7 @@ class MatchHeader extends StatelessWidget {
                 padding: EdgeInsets.only(right: SizeConfig.widthMultiplier*60),
                 child:  Text(
                   stadium,
-                  style: TextStyle(color: Colors.white70),
+                  style: const TextStyle(color: Colors.white70),
                 ),
               ),
             ],

@@ -118,14 +118,10 @@ class _TeamStatisticsScreen extends StatelessWidget {
 class _PlayerStatisticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final selectedTeam = context.watch<StatisticsCubit>().state.selectedTeam;
     final cubit = context.read<StatisticsCubit>();
     final state = context.watch<StatisticsCubit>().state;
     final List<PlayerModel> players = dummyPlayers;
 
-    final filteredPlayers = selectedTeam == null
-        ? players
-        : players.where((p) => p.team.name == selectedTeam.name).toList();
 
     return Column(
       children: [

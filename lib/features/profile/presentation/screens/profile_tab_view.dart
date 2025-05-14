@@ -10,8 +10,6 @@ class ProfileTabView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Flexible(
-      fit: FlexFit.loose,
-
       child: Padding(
         padding: EdgeInsets.all(2 * SizeConfig.widthMultiplier),
         child: SingleChildScrollView(
@@ -21,14 +19,14 @@ class ProfileTabView extends StatelessWidget {
               SizedBox(height: 2 * SizeConfig.heightMultiplier),
 
               // General Information
-              SectionTitle(title: "General Information"),
-              UserInfoCard(),
+              const SectionTitle(title: 'General Information'),
+              const UserInfoCard(),
 
               SizedBox(height: 3 * SizeConfig.heightMultiplier),
 
               // Favorite Team Section
-              SectionTitle(title: "Favorite Team"),
-              FavoriteTeamsList(),
+              const SectionTitle(title: 'Favorite Team'),
+              const FavoriteTeamsList(),
             ],
           ),
         ),

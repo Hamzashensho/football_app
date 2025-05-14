@@ -8,8 +8,10 @@ import 'package:sport_app_user/features/match_detai/presentation/widgets/match_h
 import 'package:sport_app_user/features/match_detai/presentation/widgets/match_time_line_section.dart';
 
 class MatchDetailScreen extends StatelessWidget {
-  final TeamModel teamA, teamB;
-  final String stadium, group;
+  final TeamModel teamA;
+  final TeamModel teamB;
+  final String stadium;
+  final String group;
   final String score;
 
   const MatchDetailScreen({
@@ -31,7 +33,7 @@ class MatchDetailScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 padding:  EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*4, vertical: SizeConfig.heightMultiplier*1.2),
-                children: [
+                children: const [
                   MatchTimelineSection(
                     title: 'First Half',
                     events: [
