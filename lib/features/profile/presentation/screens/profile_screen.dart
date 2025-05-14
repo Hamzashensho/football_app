@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
-        selectedTab == 0 ? ProfileTabView() : SettingTabView(),
+        selectedTab == 0 ? const ProfileTabView() : const SettingTabView(),
       ],
     );
   }

@@ -3,10 +3,10 @@ import 'package:sport_app_user/core/constants/dummy_data.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
   StatisticsCubit()
-      : super(StatisticsState(selectedTab: 0, selectedTeam: null, expandedGroups: {}));
+      : super(StatisticsState(selectedTab: 0, expandedGroups: {}));
 
   void changeTab(int index) {
-    emit(state.copyWith(selectedTab: index, selectedTeam: null));
+    emit(state.copyWith(selectedTab: index));
   }
 
   void selectTeam(TeamModel? team) {

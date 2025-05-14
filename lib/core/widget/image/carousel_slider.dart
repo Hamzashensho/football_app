@@ -26,7 +26,6 @@ class _CarouselWithDotsState extends State<CarouselWithDots> {
             autoPlay: true,
             enlargeCenterPage: true,
             viewportFraction: 1.0,
-            autoPlayInterval: const Duration(seconds: 4),
             onPageChanged: (index, reason) {
               setState(() {
                 _currentIndex = index;

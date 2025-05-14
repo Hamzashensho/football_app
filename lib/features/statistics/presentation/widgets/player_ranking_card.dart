@@ -32,8 +32,8 @@ class PlayerRankingCard extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              "${player.order}°",
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              '${player.order}°',
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
         ),

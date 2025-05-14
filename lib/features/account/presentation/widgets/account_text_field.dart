@@ -39,7 +39,7 @@ class _AccountTextFieldState extends State<AccountTextField> {
     );
 
     if (pickedDate != null) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       setState(() {
         _controller.text = formattedDate;
       });
@@ -49,7 +49,6 @@ class _AccountTextFieldState extends State<AccountTextField> {
   Future<void> _selectCountry() async {
     showCountryPicker(
       context: context,
-      showPhoneCode: false,
       onSelect: (Country country) {
         setState(() {
           _controller.text = country.name;
@@ -62,10 +61,10 @@ class _AccountTextFieldState extends State<AccountTextField> {
   Widget build(BuildContext context) {
     return TextField(
       keyboardType:
-          widget.hintText?.toLowerCase().contains("email") ?? false
+          widget.hintText?.toLowerCase().contains('email') ?? false
               ? TextInputType.emailAddress
-              : ((widget.hintText?.toLowerCase().contains("phone") ?? false) ||
-                  (widget.hintText?.toLowerCase().contains("postal") ?? false))
+              : ((widget.hintText?.toLowerCase().contains('phone') ?? false) ||
+                  (widget.hintText?.toLowerCase().contains('postal') ?? false))
               ? TextInputType.number
               : TextInputType.text,
       controller: _controller,
@@ -91,7 +90,7 @@ class _AccountTextFieldState extends State<AccountTextField> {
                 : null,
         hintText: widget.hintText,
         filled: true,
-        fillColor: Colors.white.withOpacity(0.8),
+        fillColor: Colors.white.withValues(alpha: 0.8),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(SizeConfig.screenHeight * 0.01),
         ),

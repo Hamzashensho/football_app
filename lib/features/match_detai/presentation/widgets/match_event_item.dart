@@ -44,7 +44,7 @@ class MatchEventItem extends StatelessWidget {
             ),
           ],
         ),
-      Spacer(),
+      const Spacer(),
       Text(
         minute,
         style: TextStyle(

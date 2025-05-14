@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
       body: SafeArea(
         child: Column(
           children: [
-            HomePageHeader(),
+            const HomePageHeader(),
             SizedBox(height: SizeConfig.heightMultiplier * 2),
             Expanded(child: _screens[_selectedIndex]),
           ],

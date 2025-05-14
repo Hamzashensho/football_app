@@ -32,7 +32,7 @@ class _MatchesListScreenState extends State<MatchesListScreen> {
                 Container(
                   height: 200,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(Assets.onBoarding3),
                       fit: BoxFit.cover,
@@ -43,7 +43,7 @@ class _MatchesListScreenState extends State<MatchesListScreen> {
                   top: 40,
                   left: 10,
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -61,21 +61,21 @@ class _MatchesListScreenState extends State<MatchesListScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        CustomTabButton(title: "Current matches", isSelected:selectedTab==0 , onTap: (){
+                        CustomTabButton(title: 'Current matches', isSelected:selectedTab==0 , onTap: (){
                           setState(() {
                             selectedTab=0;
                           });
                         }),
-                        CustomTabButton(title: "Quarter-finals", isSelected:selectedTab==1 , onTap: (){
+                        CustomTabButton(title: 'Quarter-finals', isSelected:selectedTab==1 , onTap: (){
                           setState(() {
                             selectedTab=1;
                           });
                         }),
-                        CustomTabButton(title: "Semi-finals", isSelected:selectedTab==2, onTap: (){
+                        CustomTabButton(title: 'Semi-finals', isSelected:selectedTab==2, onTap: (){
                           setState(() {
                             selectedTab=2;
                           });
-                        }),CustomTabButton(title: "Final", isSelected:selectedTab==3, onTap: (){
+                        }),CustomTabButton(title: 'Final', isSelected:selectedTab==3, onTap: (){
                           setState(() {
                             selectedTab=3;
                           });
@@ -99,7 +99,7 @@ class _MatchesListScreenState extends State<MatchesListScreen> {
                 MatchGroupTab(
                   title: widget.title,
                   matches: widget.matches,
-                ):Placeholder()
+                ):const Placeholder()
               ],
             ),
           ],

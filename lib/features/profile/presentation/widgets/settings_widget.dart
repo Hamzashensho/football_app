@@ -21,10 +21,10 @@ class SectionTitle extends StatelessWidget {
 class NotificationToggle extends StatefulWidget {
   final String title;
 
-  const NotificationToggle({required this.title});
+  const NotificationToggle({super.key, required this.title});
 
   @override
-  _NotificationToggleState createState() => _NotificationToggleState();
+  State<NotificationToggle> createState() => _NotificationToggleState();
 }
 
 class _NotificationToggleState extends State<NotificationToggle> {
@@ -61,11 +61,11 @@ class AccountOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: isDanger ? Color(0xFF9C0101) : Colors.teal),
+      leading: Icon(icon, color: isDanger ? const Color(0xFF9C0101) : Colors.teal),
       title: Text(
         title,
         style: TextStyle(
-          color: isDanger ? Color(0xFF9C0101) : Colors.teal,
+          color: isDanger ? const Color(0xFF9C0101) : Colors.teal,
           fontWeight: FontWeight.bold,
         ),
       ),

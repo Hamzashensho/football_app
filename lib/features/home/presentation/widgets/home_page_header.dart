@@ -10,7 +10,6 @@ class HomePageHeader extends StatelessWidget {
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier*3),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             Assets.logoWithoutBackground,

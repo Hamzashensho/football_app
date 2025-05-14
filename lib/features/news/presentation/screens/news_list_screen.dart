@@ -30,7 +30,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomTabButton(
-              title: "Today",
+              title: 'Today',
               isSelected: selectedTab == 0,
               onTap: () {
                 setState(() {
@@ -44,7 +44,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
               },
             ),
             CustomTabButton(
-              title: "All",
+              title: 'All',
               isSelected: selectedTab == 1,
               onTap: () {
                 setState(() {
@@ -58,9 +58,9 @@ class _NewsListScreenState extends State<NewsListScreen> {
         const Divider(),
         Expanded(
           child: filteredNews.isEmpty
-              ? Center(
+              ? const Center(
             child: Text(
-              "No news for today.",
+              'No news for today.',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           )

@@ -34,9 +34,9 @@ class RegisterScreen extends StatelessWidget {
                     indicatorColor: Colors.cyanAccent,
                     dividerColor: Colors.white,
                     indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: [Tab(text: "Log in"), Tab(text: "Sign up")],
+                    tabs: const [Tab(text: 'Log in'), Tab(text: 'Sign up')],
                   ),
-                  Expanded(
+                  const Expanded(
                     child: TabBarView(
                       children: [
                         LoginTabView(),

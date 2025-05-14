@@ -9,7 +9,7 @@ class SimpleTeamDropdown extends StatefulWidget {
   const SimpleTeamDropdown({super.key});
 
   @override
-  _SimpleTeamDropdownState createState() => _SimpleTeamDropdownState();
+  State<SimpleTeamDropdown> createState() => _SimpleTeamDropdownState();
 }
 
 class _SimpleTeamDropdownState extends State<SimpleTeamDropdown> {
@@ -29,7 +29,7 @@ class _SimpleTeamDropdownState extends State<SimpleTeamDropdown> {
         value: selectedTeam,
         dropdownColor: Colors.black38,
         hint: const Text(
-          "Choose your team",
+          'Choose your team',
           style: TextStyle(color: Colors.white),
         ),
         items:
@@ -43,7 +43,7 @@ class _SimpleTeamDropdownState extends State<SimpleTeamDropdown> {
                       children: [
                         Image.asset(team.logo, width: SizeConfig.widthMultiplier*7, height: SizeConfig.heightMultiplier*5),
                          SizedBox(width: SizeConfig.widthMultiplier*3),
-                        Text(team.name, style: TextStyle(color: Colors.white)),
+                        Text(team.name, style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                     if (team != dummyTeams.last)

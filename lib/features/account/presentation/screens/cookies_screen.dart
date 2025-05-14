@@ -14,17 +14,17 @@ class CookiesScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          BackgroundImage(imagePath: Assets.accountBackgroundImage),
+          const BackgroundImage(imagePath: Assets.accountBackgroundImage),
           Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthMultiplier * 8),
               child: Container(
                 padding: EdgeInsets.all(SizeConfig.widthMultiplier * 5),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
-                  boxShadow: [
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
@@ -36,13 +36,13 @@ class CookiesScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "“Every champion was once a contender who refused to give up.”",
+                      '“Every champion was once a contender who refused to give up.”',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: SizeConfig.textMultiplier * 3,
                         fontWeight: FontWeight.w500,
                         height: 1.5,
-                        shadows: [
+                        shadows: const [
                           Shadow(
                             offset: Offset(2, 2),
                             blurRadius: 4,
@@ -58,19 +58,19 @@ class CookiesScreen extends StatelessWidget {
                         precacheImage(const AssetImage(Assets.onBoarding1), context);
                         Navigator.pushReplacementNamed(context, RoutePaths.onBoarding);
                       },
-                      title: "Accept",
+                      title: 'Accept',
                     ),
                     SizedBox(height: SizeConfig.heightMultiplier * 2),
                     AccountButton(
                       onPressed: () {},
-                      title: "Reject Non-Essential",
-                      foregroundColor: Colors.redAccent.withOpacity(0.8),
+                      title: 'Reject Non-Essential',
+                      foregroundColor: Colors.redAccent.withValues(alpha: 0.8),
                     ),
                     SizedBox(height: SizeConfig.heightMultiplier * 2),
                     AccountButton(
                       onPressed: () {},
-                      title: "Set Preferences",
-                      foregroundColor: Colors.grey.withOpacity(0.7),
+                      title: 'Set Preferences',
+                      foregroundColor: Colors.grey.withValues(alpha: 0.7),
                     ),
                   ],
                 ),
