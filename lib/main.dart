@@ -4,7 +4,7 @@ import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/routing/router.dart';
 import 'package:sport_app_user/core/utils/theme.dart';
 
-import 'features/account/presentation/screens/cookies_screen.dart';
+import 'features/mobile/account/presentation/screens/cookies_screen.dart';
 
 void main() {
 
