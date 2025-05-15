@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sport_app_user/core/constants/dummy_data.dart';
 import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/widget/match/match_card.dart';
-import 'package:sport_app_user/features/account/presentation/screens/cookies_screen.dart';
-import 'package:sport_app_user/features/account/presentation/screens/on_boarding_screen.dart';
-import 'package:sport_app_user/features/account/presentation/screens/register_screen.dart';
-import 'package:sport_app_user/features/home/presentation/screens/home_screen.dart';
-import 'package:sport_app_user/features/match_detai/presentation/screens/match_screen_detail.dart';
-import 'package:sport_app_user/features/match_group_detail/presentation/screens/match_list_screen.dart';
-import 'package:sport_app_user/features/news/presentation/screens/news_detail_screen.dart';
+import 'package:sport_app_user/features/mobile/account/presentation/screens/cookies_screen.dart';
+import 'package:sport_app_user/features/mobile/account/presentation/screens/on_boarding_screen.dart';
+import 'package:sport_app_user/features/mobile/account/presentation/screens/register_screen.dart';
+import 'package:sport_app_user/features/mobile/home/presentation/screens/home_screen.dart';
+import 'package:sport_app_user/features/mobile/match_detai/presentation/screens/match_screen_detail.dart';
+import 'package:sport_app_user/features/mobile/match_group_detail/presentation/screens/match_list_screen.dart';
+import 'package:sport_app_user/features/mobile/news/presentation/screens/news_detail_screen.dart';
 
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
