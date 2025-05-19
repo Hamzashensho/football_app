@@ -47,6 +47,7 @@ class MainScreen extends StatelessWidget {
         SizedBox(height: SizeConfig.heightMultiplier * 3),
         MatchGroup(
           title: 'Junior Championship 12-14 years',
+          isFromHomePage: true,
           matches: [
             MatchCard(
               date: '03/03/2024',
