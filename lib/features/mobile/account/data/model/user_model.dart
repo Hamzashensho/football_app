@@ -1,3 +1,5 @@
+import 'package:sport_app_user/features/mobile/account/domain/entities/user_entity.dart';
+
 class UserModel {
   final String userId;
   final String firstName;
@@ -11,8 +13,8 @@ class UserModel {
   final String zipCode;
   final String favoriteTeamId;
   final UserNotifications notifications;
-
-  UserModel({
+  final String pictureUrl;
+  UserModel( {
     required this.userId,
     required this.firstName,
     required this.lastName,
@@ -25,6 +27,7 @@ class UserModel {
     required this.zipCode,
     required this.favoriteTeamId,
     required this.notifications,
+    required this.pictureUrl,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String id) {
@@ -41,6 +44,7 @@ class UserModel {
       zipCode: map['zipCode'],
       favoriteTeamId: map['favoriteTeamId'],
       notifications: UserNotifications.fromMap(map['notifications']),
+      pictureUrl: map['pictureUrl']
     );
   }
 
@@ -57,18 +61,69 @@ class UserModel {
       'zipCode': zipCode,
       'favoriteTeamId': favoriteTeamId,
       'notifications': notifications.toMap(),
+      'pictureUrl':pictureUrl,
     };
   }
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      userId: json['userId'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      dob: DateTime.parse(json['dob']),
+      phoneNumber: json['phoneNumber'],
+      email: json['email'],
+      country: json['country'],
+      stateProvince: json['stateProvince'],
+      municipality: json['municipality'],
+      zipCode: json['zipCode'],
+      favoriteTeamId: json['favoriteTeamId'],
+      notifications: UserNotifications.fromJson(json['notifications']),
+        pictureUrl: json['pictureUrl']
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'firstName': firstName,
+      'lastName': lastName,
+      'dob': dob.toIso8601String(),
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'country': country,
+      'stateProvince': stateProvince,
+      'municipality': municipality,
+      'zipCode': zipCode,
+      'favoriteTeamId': favoriteTeamId,
+      'notifications': notifications.toJson(),
+      'pictureUrl':pictureUrl,
+    };
+  }
+
+  UserEntity toEntity() => UserEntity(
+    uid: userId,
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    dob: dob,
+    phoneNumber: phoneNumber,
+    country: country,
+    stateProvince: stateProvince,
+    municipality: municipality,
+    zipCode: zipCode,
+    favoriteTeamId: favoriteTeamId,
+    notifications: notifications,
+    pictureUrl: pictureUrl,
+  );
+
 }
 
 class UserNotifications {
   final bool app;
   final bool favoriteTeam;
 
-  UserNotifications({
-    required this.app,
-    required this.favoriteTeam,
-  });
+  UserNotifications({required this.app, required this.favoriteTeam});
 
   factory UserNotifications.fromMap(Map<String, dynamic> map) {
     return UserNotifications(
@@ -78,6 +133,20 @@ class UserNotifications {
   }
 
   Map<String, dynamic> toMap() {
+    return {
+      'app': app,
+      'favoriteTeam': favoriteTeam,
+    };
+  }
+
+  factory UserNotifications.fromJson(Map<String, dynamic> json) {
+    return UserNotifications(
+      app: json['app'],
+      favoriteTeam: json['favoriteTeam'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'app': app,
       'favoriteTeam': favoriteTeam,

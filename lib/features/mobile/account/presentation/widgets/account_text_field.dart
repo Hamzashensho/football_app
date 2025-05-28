@@ -11,6 +11,8 @@ class AccountTextField extends StatefulWidget {
   final Function()? onTapSuffixIcon;
   final bool isDateTextField;
   final bool isCountryPicker;
+  final TextEditingController controller;
+  final FormFieldValidator validator;
 
   const AccountTextField({
     super.key,
@@ -21,6 +23,8 @@ class AccountTextField extends StatefulWidget {
     this.onTapSuffixIcon,
     this.isDateTextField = false,
     this.isCountryPicker = false,
+    required this.controller,
+    required this.validator,
   });
 
   @override
@@ -28,8 +32,6 @@ class AccountTextField extends StatefulWidget {
 }
 
 class _AccountTextFieldState extends State<AccountTextField> {
-  final TextEditingController _controller = TextEditingController();
-
   Future<void> _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -41,7 +43,7 @@ class _AccountTextFieldState extends State<AccountTextField> {
     if (pickedDate != null) {
       final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       setState(() {
-        _controller.text = formattedDate;
+        widget.controller.text = formattedDate;
       });
     }
   }
@@ -51,7 +53,7 @@ class _AccountTextFieldState extends State<AccountTextField> {
       context: context,
       onSelect: (Country country) {
         setState(() {
-          _controller.text = country.name;
+          widget.controller.text = country.name;
         });
       },
     );
@@ -59,35 +61,27 @@ class _AccountTextFieldState extends State<AccountTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType:
-          widget.hintText?.toLowerCase().contains('email') ?? false
-              ? TextInputType.emailAddress
-              : ((widget.hintText?.toLowerCase().contains('phone') ?? false) ||
-                  (widget.hintText?.toLowerCase().contains('postal') ?? false))
-              ? TextInputType.number
-              : TextInputType.text,
-      controller: _controller,
+    return TextFormField(
+      validator: widget.validator,
+      keyboardType: _getKeyboardType(),
+      controller: widget.controller,
       readOnly: widget.isDateTextField || widget.isCountryPicker,
-      onTap:
-          widget.isDateTextField
-              ? _selectDate
-              : widget.isCountryPicker
-              ? _selectCountry
-              : () {},
+      onTap: widget.isDateTextField
+          ? _selectDate
+          : widget.isCountryPicker
+          ? _selectCountry
+          : null,
       obscureText: widget.obscureText,
       decoration: InputDecoration(
-        prefixIcon:
-            widget.prefixImagePath != null
-                ? Image.asset(widget.prefixImagePath!, color: Colors.black)
-                : null,
-        suffixIcon:
-            widget.suffixIcon != null
-                ? InkWell(
-                  onTap: widget.onTapSuffixIcon,
-                  child: Icon(widget.suffixIcon),
-                )
-                : null,
+        prefixIcon: widget.prefixImagePath != null
+            ? Image.asset(widget.prefixImagePath!, color: Colors.black)
+            : null,
+        suffixIcon: widget.suffixIcon != null
+            ? InkWell(
+          onTap: widget.onTapSuffixIcon,
+          child: Icon(widget.suffixIcon),
+        )
+            : null,
         hintText: widget.hintText,
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.8),
@@ -96,5 +90,14 @@ class _AccountTextFieldState extends State<AccountTextField> {
         ),
       ),
     );
+  }
+
+  TextInputType _getKeyboardType() {
+    final hint = widget.hintText?.toLowerCase() ?? '';
+    if (hint.contains('email')) return TextInputType.emailAddress;
+    if (hint.contains('phone') || hint.contains('postal')) {
+      return TextInputType.number;
+    }
+    return TextInputType.text;
   }
 }
