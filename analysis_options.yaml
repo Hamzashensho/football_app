@@ -44,6 +44,7 @@ linter:
     prefer_const_constructors_in_immutables: true
     sort_child_properties_last: true
     avoid_positional_boolean_parameters: true
+    always_use_package_imports: true
 
 analyzer:
   exclude:

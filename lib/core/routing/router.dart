@@ -5,6 +5,7 @@ import 'package:sport_app_user/core/widget/match/match_card.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/screens/cookies_screen.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/screens/on_boarding_screen.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/screens/register_screen.dart';
+import 'package:sport_app_user/features/mobile/account/presentation/screens/splash_screen.dart';
 import 'package:sport_app_user/features/mobile/home/presentation/screens/home_screen.dart';
 import 'package:sport_app_user/features/mobile/match_detai/presentation/screens/match_screen_detail.dart';
 import 'package:sport_app_user/features/mobile/match_group_detail/presentation/screens/match_list_screen.dart';
@@ -14,13 +15,13 @@ class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutePaths.cookiesScreen:
-        return _buildRoute(const CookiesScreen());
+        return _buildRoute(const CookiesScreen(),settings);
       case RoutePaths.onBoarding:
-        return _buildRoute(const OnBoardingScreen());
+        return _buildRoute(const OnBoardingScreen(),settings);
       case RoutePaths.register:
-        return _buildRoute(const RegisterScreen());
+        return _buildRoute(const RegisterScreen(),settings);
       case RoutePaths.homeScreen:
-        return _buildRoute(const MainPage());
+        return _buildRoute(const MainPage(),settings);
       case RoutePaths.matchListScreen:
         final args = settings.arguments as Map<String, dynamic>;
         return _buildRoute(
@@ -28,6 +29,7 @@ class AppRoutes {
             title: args['title'],
             matches: args['matches'] as List<MatchCard>,
           ),
+          settings
         );
       case RoutePaths.matchDetailScreen:
         final args = settings.arguments as Map<String, dynamic>;
@@ -39,6 +41,7 @@ class AppRoutes {
             score: args['score'],
             stadium: args['stadium'],
           ),
+          settings
         );
       case RoutePaths.newsDetailScreen:
         final args = settings.arguments as Map<String, dynamic>;
@@ -49,14 +52,19 @@ class AppRoutes {
             description: args['description'],
             dateTime: args['dateTime'] as DateTime,
           ),
+          settings
         );
+      case RoutePaths.splashScreen:
+        return _buildRoute(const SplashScreen(),settings);
+
+
       default:
         return _errorRoute();
     }
   }
 
-  static MaterialPageRoute _buildRoute(Widget child) {
-    return MaterialPageRoute(builder: (_) => child);
+  static MaterialPageRoute _buildRoute(Widget child, [RouteSettings? settings]) {
+    return MaterialPageRoute(builder: (_) => child,settings:settings );
   }
 
   static Route<dynamic> _errorRoute() {
