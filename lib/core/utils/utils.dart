@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-class Utils{
+class Utils {
   static String formatDateToTodayOrYesterday(DateTime date) {
     final now = DateTime.now();
     if (date.year == now.year && date.month == now.month && date.day == now.day) {
@@ -11,5 +11,11 @@ class Utils{
       return DateFormat('dd/MM/yyyy').format(date);
     }
 }
+
+
+  static bool isInt(String input) {
+    return int.tryParse(input) != null;
+  }
+
 
 }
