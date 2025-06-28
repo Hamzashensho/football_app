@@ -153,22 +153,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
-  dio:
-    dependency: "direct main"
-    description:
-      name: dio
-      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.6"
-  dio_logger:
-    dependency: "direct main"
-    description:
-      name: dio_logger
-      sha256: cbb04b6216d8ad3944cdfbde2801e1e292fc44da49f2d0c746636e30a2c82dbf
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.8+8"
   dots_indicator:
     dependency: transitive
     description:
