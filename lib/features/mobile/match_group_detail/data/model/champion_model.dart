@@ -1,10 +1,12 @@
+import 'package:sport_app_user/features/web/champion_management/domain/entities/champion_entity.dart';
+
 class ChampionModel {
-  final String championId;
+  final String? championId;
   final String title;
   final DateTime date;
 
   ChampionModel({
-    required this.championId,
+     this.championId,
     required this.title,
     required this.date,
   });
@@ -18,9 +20,10 @@ class ChampionModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'title': title,
-      'date': date.toIso8601String(),
-    };
+    return {'title': title, 'date': date.toIso8601String()};
+  }
+
+  ChampionEntity toEntity() {
+    return ChampionEntity(championId: championId??'', title: title, date: date);
   }
 }

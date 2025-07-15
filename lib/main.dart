@@ -18,7 +18,7 @@ import 'package:sport_app_user/features/web/match_event_management/data/reposito
 import 'package:sport_app_user/features/web/match_event_management/domain/usecases/get_match_events_usecase.dart';
 import 'package:sport_app_user/features/web/match_event_management/presentation/blocs/match_event_bloc.dart';
 import 'package:sport_app_user/features/web/match_event_management/presentation/pages/match_event_management_page.dart';
-import 'package:sport_app_user/features/web/match_management/data/datasources/remote/mock_match_datasource.dart';
+import 'package:sport_app_user/features/web/match_management/data/datasources/remote/remote_match_datasource.dart';
 import 'package:sport_app_user/features/web/match_management/data/repositories/match_repository_impl.dart';
 import 'package:sport_app_user/features/web/match_management/domain/usecases/get_matches_usecase.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/blocs/match_bloc.dart';
@@ -28,12 +28,12 @@ import 'package:sport_app_user/features/web/notification_management/data/reposit
 import 'package:sport_app_user/features/web/notification_management/domain/usecases/get_notifications_usecase.dart';
 import 'package:sport_app_user/features/web/notification_management/presentation/blocs/notification_bloc.dart';
 import 'package:sport_app_user/features/web/notification_management/presentation/pages/notification_management_page.dart';
-import 'package:sport_app_user/features/web/player_management/data/datasources/remote/mock_player_datasource.dart';
+import 'package:sport_app_user/features/web/player_management/data/datasources/remote/remote_player_datasource.dart';
 import 'package:sport_app_user/features/web/player_management/data/repositories/player_repository_impl.dart';
 import 'package:sport_app_user/features/web/player_management/domain/usecases/get_players_usecase.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/blocs/player_bloc.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/pages/player_management_page.dart';
-import 'package:sport_app_user/features/web/team_management/data/datasources/remote/mock_team_datasource.dart';
+import 'package:sport_app_user/features/web/team_management/data/datasources/remote/team_remote_datasource.dart';
 import 'package:sport_app_user/features/web/team_management/data/repositories/team_repository_impl.dart';
 import 'package:sport_app_user/features/web/team_management/domain/usecases/get_teams_usecase.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/blocs/team_bloc.dart';
@@ -86,11 +86,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TeamBloc>(
           create:
-              (context) => TeamBloc(
-                getTeamsUseCase: GetTeamsUseCase(
-                  TeamRepositoryImpl(mockTeamDataSource: MockTeamDataSource()),
-                ),
-              ),
+              (context) => sl<TeamBloc>(),
         ),
         BlocProvider<PlayerBloc>(
           create:
@@ -104,13 +100,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MatchBloc>(
           create:
-              (context) => MatchBloc(
-                getMatchesUseCase: GetMatchesUseCase(
-                  MatchRepositoryImpl(
-                    mockMatchDataSource: MockMatchDataSource(),
-                  ),
-                ),
-              ),
+              (context) => sl<MatchBloc>(),
         ),
         BlocProvider<MatchEventBloc>(
           create:
@@ -124,13 +114,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ChampionBloc>(
           create:
-              (context) => ChampionBloc(
-                getChampionsUseCase: GetChampionsUseCase(
-                  ChampionRepositoryImpl(
-                    mockChampionDataSource: ChampionRemoteDataSourceImpl(),
-                  ),
-                ),
-              ),
+              (context) => sl<ChampionBloc>(),
         ),
         BlocProvider<NotificationBloc>(
           create:

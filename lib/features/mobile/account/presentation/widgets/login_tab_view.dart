@@ -51,7 +51,6 @@ class _LoginTabViewState extends State<LoginTabView> {
           LoadingOverlay.of(context).hide();
           Navigator.pushReplacementNamed(context, RoutePaths.homeScreen);
         } else if (state is LoginFailed) {
-          LoadingOverlay.of(context).hide();
           _showSnackBar(state.message);
         } else if (state is LoginWithGoogleFailed) {
           _showSnackBar(state.message);

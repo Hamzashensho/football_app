@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sport_app_user/core/error/exceptions.dart';
 import 'package:sport_app_user/core/utils/logger.dart';
 import 'package:sport_app_user/features/mobile/account/data/datasources/auth_local_data_source.dart';
@@ -17,26 +18,58 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<AppException, UserEntity>> signInWithEmail(
-    String email,
-    String password,
-  ) async {
+      String email,
+      String password,
+      ) async {
     try {
       final userModel = await remoteDataSource.signInWithEmail(email, password);
       await localDataSource.cacheUser(userModel);
       return Right(userModel.toEntity());
     } on AppException catch (e) {
-      AppLogger.error(e.message);
-      return Left(e);
+      AppLogger.error('Auth error: ${e.message} (${e.code})');
+
+      switch (e.code) {
+        case 'user-not-found':
+          return Left(AuthException(
+            message: 'No account found for that email.',
+            code: e.code,
+            stackTrace: e.stackTrace,
+          ));
+        case 'wrong-password':
+          return Left(AuthException(
+            message: 'Incorrect password.',
+            code: e.code,
+            stackTrace: e.stackTrace,
+          ));
+        case 'invalid-credential':
+          return Left(AuthException(
+            message: 'Invalid or expired credentials.',
+            code: e.code,
+            stackTrace: e.stackTrace,
+          ));
+        case 'invalid-email':
+          return Left(AuthException(
+            message: 'The email address is badly formatted.',
+            code: e.code,
+            stackTrace: e.stackTrace,
+          ));
+        default:
+          return Left(AuthException(
+            message: e.message,
+            code: e.code,
+            stackTrace: e.stackTrace,
+          ));
+      }
     } catch (e, st) {
-      return Left(
-        AuthException(
-          message: 'Failed to sign in with email',
-          stackTrace: st,
-          code: 'email-signin-failed',
-        ),
-      );
+      return Left(AuthException(
+        message: 'Failed to sign in with email',
+        stackTrace: st,
+        code: 'email-signin-failed',
+      ));
     }
   }
+
+
 
   @override
   Future<Either<AppException, UserEntity>> signUpWithEmail(

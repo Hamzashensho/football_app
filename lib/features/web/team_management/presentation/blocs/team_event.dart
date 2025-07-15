@@ -1,5 +1,7 @@
 part of 'team_bloc.dart';
-abstract class TeamEvent extends Equatable {
+
+@immutable
+sealed class TeamEvent extends Equatable {
   const TeamEvent();
 
   @override
@@ -7,5 +9,20 @@ abstract class TeamEvent extends Equatable {
 }
 
 class LoadTeams extends TeamEvent {}
-// Add other team-related events here (e.g., AddTeam, UpdateTeam, DeleteTeam)
+
+class AddTeam extends TeamEvent{
+  final TeamParams teamParams;
+
+  const AddTeam({required this.teamParams});
+}
+
+class EditTeam extends TeamEvent{
+  final TeamParams teamParams;
+  const EditTeam({required this.teamParams});
+}
+
+class DeleteTeam extends TeamEvent{
+  final String teamId;
+  const DeleteTeam({required this.teamId});
+}
 
