@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
 import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 import 'package:sport_app_user/features/web/match_management/domain/entities/match_entity.dart';
 import 'package:sport_app_user/features/web/notification_management/domain/entities/notification_entity.dart';
@@ -31,6 +32,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
     context.read<TeamBloc>().add(LoadTeams());
     context.read<PlayerBloc>().add(LoadPlayers());
     context.read<MatchBloc>().add(LoadMatches());
+    context.read<ChampionBloc>().add(LoadChampions());
     context.read<NotificationBloc>().add(LoadNotifications());
   }
 
@@ -240,10 +242,10 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
     return BlocBuilder<MatchBloc, MatchState>(
       builder: (context, state) {
         int matchCount = 0;
-        final Map<MatchStatus, int> statusCounts = {
-          MatchStatus.upcoming: 0,
-          MatchStatus.live: 0,
-          MatchStatus.completed: 0,
+        final Map<String?, int> statusCounts = {
+          'Upcoming': 0,
+          'Live': 0,
+          'Completed': 0,
         };
         
         if (state is MatchLoaded) {
@@ -259,7 +261,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
           icon: Icons.sports,
           color: Colors.purple,
           isLoading: state is MatchLoading,
-          subtitle: 'Upcoming: ${statusCounts[MatchStatus.upcoming]}, In Progress: ${statusCounts[MatchStatus.live]}, Completed: ${statusCounts[MatchStatus.completed]}',
+          subtitle: 'Upcoming: ${statusCounts[MatchStatus.Upcoming]}, In Progress: ${statusCounts[MatchStatus.Live]}, Completed: ${statusCounts[MatchStatus.Completed]}',
           onTap: () {
             // Navigate to Match Management page
             if (widget.onNavigate != null) {
@@ -396,10 +398,10 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
         
         if (state is MatchLoaded) {
           // Count matches by status
-          final Map<MatchStatus, int> statusCounts = {
-            MatchStatus.upcoming: 0,
-            MatchStatus.live: 0,
-            MatchStatus.completed: 0,
+          final Map<String?, int> statusCounts = {
+            'Upcoming': 0,
+            'Live': 0,
+            "Completed": 0,
           };
           
           for (var match in state.matches) {
@@ -439,19 +441,19 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                         PieChartData(
                           sections: [
                             PieChartSectionData(
-                              value: statusCounts[MatchStatus.upcoming]!.toDouble(),
+                              value: statusCounts['Upcoming']!.toDouble(),
                               title: 'Upcoming',
                               color: Colors.blue,
                               radius: 60,
                             ),
                             PieChartSectionData(
-                              value: statusCounts[MatchStatus.live]!.toDouble(),
+                              value: statusCounts['Live']!.toDouble(),
                               title: 'In Progress',
                               color: Colors.orange,
                               radius: 60,
                             ),
                             PieChartSectionData(
-                              value: statusCounts[MatchStatus.completed]!.toDouble(),
+                              value: statusCounts['Completed']!.toDouble(),
                               title: 'Completed',
                               color: Colors.green,
                               radius: 60,
@@ -716,7 +718,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
 
         if (state is MatchLoaded) {
           final List<MatchEntity> upcomingMatches = state.matches
-              .where((match) => match.status == MatchStatus.upcoming)
+              .where((match) => match.status == MatchStatus.Upcoming)
               .toList()
             ..sort((a, b) => a.date.compareTo(b.date));
 
@@ -779,7 +781,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
         if (state is MatchLoaded) {
           // Filter and sort completed matches
           final List<MatchEntity>completedMatches = state.matches
-              .where((MatchEntity match) => match.status == MatchStatus.completed)
+              .where((MatchEntity match) => match.status == MatchStatus.Completed)
               .toList();
           
           completedMatches.sort((a, b) => b.date.compareTo(a.date));

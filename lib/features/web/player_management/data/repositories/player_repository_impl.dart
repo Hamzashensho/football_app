@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:sport_app_user/core/error/exceptions.dart';
 import 'package:sport_app_user/features/web/player_management/domain/entities/player_entity.dart';
 import 'package:sport_app_user/features/web/player_management/domain/repositories/player_repository.dart';
-import 'package:sport_app_user/features/web/player_management/data/datasources/remote/mock_player_datasource.dart';
+import 'package:sport_app_user/features/web/player_management/data/datasources/remote/remote_player_datasource.dart';
 
 class PlayerRepositoryImpl implements PlayerRepository {
   final MockPlayerDataSource mockPlayerDataSource;
