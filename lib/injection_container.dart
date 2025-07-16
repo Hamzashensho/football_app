@@ -30,6 +30,14 @@ import 'package:sport_app_user/features/web/match_management/domain/usecases/del
 import 'package:sport_app_user/features/web/match_management/domain/usecases/edit_match_usecase.dart';
 import 'package:sport_app_user/features/web/match_management/domain/usecases/get_matches_usecase.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/blocs/match_bloc.dart';
+import 'package:sport_app_user/features/web/player_management/data/datasources/remote/remote_player_datasource.dart';
+import 'package:sport_app_user/features/web/player_management/data/repositories/player_repository_impl.dart';
+import 'package:sport_app_user/features/web/player_management/domain/repositories/player_repository.dart';
+import 'package:sport_app_user/features/web/player_management/domain/usecases/add_player_usecase.dart';
+import 'package:sport_app_user/features/web/player_management/domain/usecases/delete_player_usecase.dart';
+import 'package:sport_app_user/features/web/player_management/domain/usecases/edit_player_usecase.dart';
+import 'package:sport_app_user/features/web/player_management/domain/usecases/get_players_usecase.dart';
+import 'package:sport_app_user/features/web/player_management/presentation/blocs/player_bloc.dart';
 import 'package:sport_app_user/features/web/team_management/data/datasources/remote/team_remote_datasource.dart';
 import 'package:sport_app_user/features/web/team_management/data/repositories/team_repository_impl.dart';
 import 'package:sport_app_user/features/web/team_management/domain/repositories/team_repository.dart';
@@ -38,6 +46,11 @@ import 'package:sport_app_user/features/web/team_management/domain/usecases/dele
 import 'package:sport_app_user/features/web/team_management/domain/usecases/edit_team_usecase.dart';
 import 'package:sport_app_user/features/web/team_management/domain/usecases/get_teams_usecase.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/blocs/team_bloc.dart';
+import 'package:sport_app_user/features/web/user_management/data/datasources/remote/mock_user_datasource.dart';
+import 'package:sport_app_user/features/web/user_management/data/repositories/user_repository_impl.dart';
+import 'package:sport_app_user/features/web/user_management/domain/repositories/user_repository.dart';
+import 'package:sport_app_user/features/web/user_management/domain/usecases/get_users_usecase.dart';
+import 'package:sport_app_user/features/web/user_management/presentation/blocs/user_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -67,7 +80,9 @@ Future<void> init() async {
     ..registerLazySingleton<TeamRemoteDataSource>(TeamRemoteDataSourceImpl.new)
     ..registerLazySingleton<RemoteMatchDataSource>(
       RemoteMatchDataSourceImpl.new,
-    );
+    )
+    ..registerLazySingleton<MockPlayerDataSource>(MockPlayerDataSourceImpl.new)
+    ..registerLazySingleton<MockUserDataSource>(MockUserDataSourceImpl.new);
 
   // Repository
   sl
@@ -82,6 +97,12 @@ Future<void> init() async {
     )
     ..registerLazySingleton<MatchRepository>(
       () => MatchRepositoryImpl(remoteMatchDataSource: sl()),
+    )
+    ..registerLazySingleton<PlayerRepository>(
+      () => PlayerRepositoryImpl(mockPlayerDataSource: sl()),
+    )
+    ..registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(mockUserDataSource: sl()),
     );
 
   // Use Cases
@@ -102,12 +123,19 @@ Future<void> init() async {
     ..registerLazySingleton(() => GetMatchesUseCase(sl()))
     ..registerLazySingleton(() => AddMatchUseCase(sl()))
     ..registerLazySingleton(() => EditMatchUseCase(sl()))
-    ..registerLazySingleton(() => DeleteMatchUseCase(sl()));
+    ..registerLazySingleton(() => DeleteMatchUseCase(sl()))
+    ..registerLazySingleton(() => GetPlayersUseCase(sl()))
+    ..registerLazySingleton(() => AddPlayerUseCase(sl()))
+    ..registerLazySingleton(() => EditPlayerUseCase(sl()))
+    ..registerLazySingleton(() => DeletePlayerUseCase(sl()))
+    ..registerLazySingleton(() => GetUsersUseCase(sl()));
 
   // Bloc
   sl
     ..registerFactory(AuthBloc.new)
     ..registerFactory(ChampionBloc.new)
     ..registerLazySingleton(TeamBloc.new)
-    ..registerLazySingleton(MatchBloc.new);
+    ..registerLazySingleton(MatchBloc.new)
+    ..registerLazySingleton(PlayerBloc.new)
+    ..registerLazySingleton(UserBloc.new);
 }

@@ -7,9 +7,6 @@ import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/routing/router.dart';
 import 'package:sport_app_user/core/utils/theme.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/screens/splash_screen.dart';
-import 'package:sport_app_user/features/web/champion_management/data/datasources/remote/remote_champion_datasource.dart';
-import 'package:sport_app_user/features/web/champion_management/data/repositories/champion_repository_impl.dart';
-import 'package:sport_app_user/features/web/champion_management/domain/usecases/get_champions_usecase.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/pages/champion_management_page.dart';
 import 'package:sport_app_user/features/web/dashboard/presentation/pages/dashboard_overview_page.dart';
@@ -18,9 +15,6 @@ import 'package:sport_app_user/features/web/match_event_management/data/reposito
 import 'package:sport_app_user/features/web/match_event_management/domain/usecases/get_match_events_usecase.dart';
 import 'package:sport_app_user/features/web/match_event_management/presentation/blocs/match_event_bloc.dart';
 import 'package:sport_app_user/features/web/match_event_management/presentation/pages/match_event_management_page.dart';
-import 'package:sport_app_user/features/web/match_management/data/datasources/remote/remote_match_datasource.dart';
-import 'package:sport_app_user/features/web/match_management/data/repositories/match_repository_impl.dart';
-import 'package:sport_app_user/features/web/match_management/domain/usecases/get_matches_usecase.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/blocs/match_bloc.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/pages/match_management_page.dart';
 import 'package:sport_app_user/features/web/notification_management/data/datasources/remote/mock_notification_datasource.dart';
@@ -28,19 +22,10 @@ import 'package:sport_app_user/features/web/notification_management/data/reposit
 import 'package:sport_app_user/features/web/notification_management/domain/usecases/get_notifications_usecase.dart';
 import 'package:sport_app_user/features/web/notification_management/presentation/blocs/notification_bloc.dart';
 import 'package:sport_app_user/features/web/notification_management/presentation/pages/notification_management_page.dart';
-import 'package:sport_app_user/features/web/player_management/data/datasources/remote/remote_player_datasource.dart';
-import 'package:sport_app_user/features/web/player_management/data/repositories/player_repository_impl.dart';
-import 'package:sport_app_user/features/web/player_management/domain/usecases/get_players_usecase.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/blocs/player_bloc.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/pages/player_management_page.dart';
-import 'package:sport_app_user/features/web/team_management/data/datasources/remote/team_remote_datasource.dart';
-import 'package:sport_app_user/features/web/team_management/data/repositories/team_repository_impl.dart';
-import 'package:sport_app_user/features/web/team_management/domain/usecases/get_teams_usecase.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/blocs/team_bloc.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/pages/team_management_page.dart';
-import 'package:sport_app_user/features/web/user_management/data/datasources/remote/mock_user_datasource.dart';
-import 'package:sport_app_user/features/web/user_management/data/repositories/user_repository_impl.dart';
-import 'package:sport_app_user/features/web/user_management/domain/usecases/get_users_usecase.dart';
 import 'package:sport_app_user/features/web/user_management/presentation/blocs/user_bloc.dart';
 import 'package:sport_app_user/features/web/user_management/presentation/pages/user_management_page.dart';
 import 'package:sport_app_user/injection_container.dart';
@@ -78,11 +63,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<UserBloc>(
           create:
-              (context) => UserBloc(
-                getUsersUseCase: GetUsersUseCase(
-                  UserRepositoryImpl(mockUserDataSource: MockUserDataSource()),
-                ),
-              ),
+              (context) => sl<UserBloc>(),
         ),
         BlocProvider<TeamBloc>(
           create:
@@ -90,13 +71,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<PlayerBloc>(
           create:
-              (context) => PlayerBloc(
-                getPlayersUseCase: GetPlayersUseCase(
-                  PlayerRepositoryImpl(
-                    mockPlayerDataSource: MockPlayerDataSource(),
-                  ),
-                ),
-              ),
+              (context) => sl<PlayerBloc>(),
         ),
         BlocProvider<MatchBloc>(
           create:

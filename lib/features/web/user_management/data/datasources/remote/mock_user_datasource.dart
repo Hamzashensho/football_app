@@ -1,38 +1,30 @@
-import 'package:sport_app_user/features/web/user_management/domain/entities/user_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sport_app_user/core/utils/logger.dart';
+import 'package:sport_app_user/features/mobile/account/data/model/user_model.dart';
+import 'package:sport_app_user/features/mobile/account/domain/entities/user_entity.dart';
 
-// Mock data source for users
-class MockUserDataSource {
+abstract class MockUserDataSource {
+  Future<List<UserEntity>> getUsers();
+
+}
+
+class MockUserDataSourceImpl implements MockUserDataSource {
+
+  final _usersCollection = FirebaseFirestore.instance.collection('users');
+
+
+  @override
   Future<List<UserEntity>> getUsers() async {
-    // Simulate network delay
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
-      // Return some mock user data
-      return [
-        UserEntity(
-          userId: 'user1',
-          firstName: 'John',
-          lastName: 'Doe',
-          dob: DateTime(1990, 1, 1),
-          phoneNumber: '123-456-7890',
-          email: 'john.doe@example.com',
-          country: 'USA',
-          favoriteTeamId: 'team1'
-        ),
-        UserEntity(
-          userId: 'user2',
-          firstName: 'Jane',
-          lastName: 'Smith',
-          dob: DateTime(1992, 5, 15),
-          phoneNumber: '987-654-3210',
-          email: 'jane.smith@example.com',
-          country: 'Canada',
-          favoriteTeamId: 'team2'
-        ),
-      ];
-    } on Exception catch (e) {
-      throw Exception('Get users Failed');
+      final snapshot = await _usersCollection.get();
+      return snapshot.docs
+          .map((doc) => UserModel.fromMap(doc.data(), doc.id).toEntity())
+          .toList();
+    } catch (e) {
+      AppLogger.error('Get users Failed: $e');
+      throw Exception('Get users Failed: $e');
     }
   }
 
-  // Add mock methods for addUser, updateUser, deleteUser etc. as needed
+
 }

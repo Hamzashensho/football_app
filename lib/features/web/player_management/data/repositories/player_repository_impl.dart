@@ -10,19 +10,74 @@ class PlayerRepositoryImpl implements PlayerRepository {
   PlayerRepositoryImpl({required this.mockPlayerDataSource});
 
   @override
-  Future<Either<AppException,List<PlayerEntity>>> getPlayers() async {
+  Future<Either<AppException, List<PlayerEntity>>> getPlayers() async {
     try {
-      final List<PlayerEntity> players= await mockPlayerDataSource.getPlayers();
+      final players = await mockPlayerDataSource.getPlayers();
       return Right(players);
-    } on Exception catch (e,st) {
+    } catch (e, st) {
       return Left(Failure(
         message: e.toString(),
         stackTrace: st,
-        code: 'get-players-failed'
+        code: 'get-players-failed',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<AppException, void>> addPlayer(PlayerEntity player) async {
+    try {
+      await mockPlayerDataSource.addPlayer(player);
+      return const Right(null);
+    } catch (e, st) {
+      return Left(Failure(
+        message: e.toString(),
+        stackTrace: st,
+        code: 'add-player-failed',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<AppException, PlayerEntity>> getPlayerById(String id) async {
+    try {
+      final match = await mockPlayerDataSource.getPlayerById(id);
+      return Right(match);
+    } catch (e, st) {
+      return Left(Failure(
+        message: e.toString(),
+        stackTrace: st,
+        code: 'get-player-by-id-failed',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<AppException, void>> deletePlayer(String id) async {
+    try {
+      await mockPlayerDataSource.deletePlayer(id);
+      return const Right(null);
+    } catch (e, st) {
+      return Left(Failure(
+        message: e.toString(),
+        stackTrace: st,
+        code: 'delete-player-failed',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<AppException, void>> editPlayer(PlayerEntity player) async {
+    try {
+      await mockPlayerDataSource.editPlayer(player);
+      return const Right(null);
+    } catch (e, st) {
+      return Left(Failure(
+        message: e.toString(),
+        stackTrace: st,
+        code: 'edit-player-failed',
       ));
     }
   }
   
-  // Implement other methods like addPlayer, updatePlayer, deletePlayer here
 }
 
