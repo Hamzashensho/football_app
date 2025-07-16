@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport_app_user/core/widget/loader.dart';
 import 'package:sport_app_user/features/web/user_management/presentation/blocs/user_bloc.dart';
 
 
@@ -14,9 +15,8 @@ class _UserManagementPageState extends State<UserManagementPage> {
   @override
   void initState() {
     super.initState();
-    // Dispatch an event to load users when the page is initialized
-    // context.read<UserBloc>().add(LoadUsers());
-    // For now, we will add a button to trigger this, or do it in a more controlled way later.
+     context.read<UserBloc>().add(LoadUsers());
+
   }
 
   @override
@@ -25,7 +25,18 @@ class _UserManagementPageState extends State<UserManagementPage> {
       appBar: AppBar(
         title: const Text('User Management'),
       ),
-      body: BlocBuilder<UserBloc, UserState>(
+      body: BlocConsumer<UserBloc, UserState>(
+        buildWhen: (previous, current) => current is UserLoaded,
+        listener: (BuildContext context, UserState state) {
+          if(state is UserLoading){
+            LoadingOverlay.of(context).show();
+          }else if(state is UserLoaded){
+            LoadingOverlay.of(context).hide();
+          }else if(state is UserError){
+            LoadingOverlay.of(context).hide();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
         builder: (context, state) {
           if (state is UserLoading) {
             return const Center(child: CircularProgressIndicator());

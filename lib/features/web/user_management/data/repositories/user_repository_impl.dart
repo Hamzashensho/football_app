@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:sport_app_user/core/error/exceptions.dart';
-import 'package:sport_app_user/features/web/user_management/domain/entities/user_entity.dart';
+import 'package:sport_app_user/features/mobile/account/domain/entities/user_entity.dart';
 import 'package:sport_app_user/features/web/user_management/domain/repositories/user_repository.dart';
 import 'package:sport_app_user/features/web/user_management/data/datasources/remote/mock_user_datasource.dart';
 
@@ -23,10 +23,5 @@ class UserRepositoryImpl implements UserRepository {
       );
     }
   }
-  
-  // Implement other methods like addUser, updateUser, deleteUser here
-  // For example:
-  // Future<void> addUser(UserEntity user) async {
-  //   // Call mockUserDataSource.addUser(user) or similar
-  // }
+
 }

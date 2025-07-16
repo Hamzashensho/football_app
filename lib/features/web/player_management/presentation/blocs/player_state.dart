@@ -29,3 +29,35 @@ class PlayerError extends PlayerState {
   List<Object> get props => [message];
 }
 
+//AddPlayer states
+class AddPlayerLoading extends PlayerState{}
+class AddPlayerSuccess extends PlayerState{}
+class AddPlayerFailed extends PlayerState{
+  final String message;
+  const AddPlayerFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+//EditPlayer states
+class EditPlayerLoading extends PlayerState{}
+class EditPlayerSuccess extends PlayerState{}
+class EditPlayerFailed extends PlayerState{
+  final String message;
+  const EditPlayerFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+//DeletePlayer states
+class DeletePlayerLoading extends PlayerState{}
+class DeletePlayerSuccess extends PlayerState{}
+class DeletePlayerFailed extends PlayerState{
+  final String message;
+  const DeletePlayerFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
