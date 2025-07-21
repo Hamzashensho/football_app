@@ -1,12 +1,12 @@
 import 'package:sport_app_user/features/web/notification_management/domain/entities/notification_entity.dart';
 
-// Mock data source for notifications
+
 class MockNotificationDataSource {
   Future<List<NotificationEntity>> getNotifications() async {
-    // Simulate network delay
+
     try {
       await Future.delayed(const Duration(milliseconds: 100));
-      // Return some mock notification data
+
       return [
         NotificationEntity(
           notificationId: 'notif1',
@@ -38,7 +38,5 @@ class MockNotificationDataSource {
       throw Exception('Failed to get notifications');
     }
   }
-
-  // Add mock methods for addNotification, updateNotification, deleteNotification etc. as needed
 }
 

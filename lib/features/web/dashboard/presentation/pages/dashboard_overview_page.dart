@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
+import 'package:sport_app_user/features/web/notification_management/data/datasources/remote/mock_notification_datasource.dart';
 import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 import 'package:sport_app_user/features/web/match_management/domain/entities/match_entity.dart';
 import 'package:sport_app_user/features/web/notification_management/domain/entities/notification_entity.dart';
@@ -27,13 +31,21 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
   @override
   void initState() {
     super.initState();
-    // Load all required data when the dashboard is initialized
     context.read<UserBloc>().add(LoadUsers());
     context.read<TeamBloc>().add(LoadTeams());
     context.read<PlayerBloc>().add(LoadPlayers());
     context.read<MatchBloc>().add(LoadMatches());
     context.read<ChampionBloc>().add(LoadChampions());
     context.read<NotificationBloc>().add(LoadNotifications());
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .set({'fcmToken': newToken}, SetOptions(merge: true));
+      }
+    });
   }
 
   @override

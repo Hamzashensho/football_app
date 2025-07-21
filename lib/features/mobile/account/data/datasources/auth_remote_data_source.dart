@@ -1,5 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:sport_app_user/core/error/exceptions.dart';
+import 'package:sport_app_user/core/utils/logger.dart';
 import 'package:sport_app_user/features/mobile/account/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,7 +14,6 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> signInWithFacebook();
   Future<UserModel?> getCurrentUser();
   Future<void> signOut();
-
   Future<void> resetEmailPassword(String email);
 }
 
@@ -29,8 +29,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       final user = result.user;
       if (user == null) throw Exception('User is null after sign in');
+
+       await setToken(user.uid);
+
       return _createUserModel(user);
     } on FirebaseAuthException catch (e) {
+      AppLogger.error('from root:${e.message}');
+
       throw Exception('Sign in failed: ${e.message}');
     }
   }
@@ -41,7 +46,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       final user = result.user;
       if (user == null) throw Exception('User is null after sign up');
-      user.sendEmailVerification();
+
+       setToken(user.uid);
+
+      await user.sendEmailVerification();
       final userModel = _mapEntityToModel(user, userEntity);
       await _usersCollection.doc(user.uid).set(userModel.toJson());
       return userModel;
@@ -66,6 +74,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final result = await _firebaseAuth.signInWithCredential(credential);
       final user = result.user;
       if (user == null) throw Exception('User is null after Google sign in');
+
+       setToken(user.uid);
 
       final userModel = _createUserModel(user);
       final docExists = (await _usersCollection.doc(user.uid).get()).exists;
@@ -142,7 +152,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       zipCode: '',
       favoriteTeamId: '',
       notifications: UserNotifications(app: true, favoriteTeam: true),
-      pictureUrl: user.photoURL??''
+      pictureUrl: user.photoURL??'',
+      fcmToken: user.refreshToken??''
     );
   }
 
@@ -160,7 +171,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       zipCode: entity.zipCode ?? '',
       favoriteTeamId: entity.favoriteTeamId ?? '',
       notifications: entity.notifications??UserNotifications(app: true,favoriteTeam: true),
-      pictureUrl: entity.pictureUrl??''
+      pictureUrl: entity.pictureUrl??'',
+      fcmToken: entity.fcmToken??''
     );
   }
 
@@ -170,6 +182,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       _firebaseAuth.sendPasswordResetEmail(email: email);
     } on Exception catch (e) {
       throw Exception('Send password reset email failed: ${e.toString()}');
+    }
+  }
+
+  Future<void> setToken(String userId)async{
+    try {
+      AppLogger.debug('we are set token please wait');
+      await FirebaseMessaging.instance.requestPermission(provisional: true);
+      final token = await FirebaseMessaging.instance.getToken(vapidKey: 'BC_DHKaKG9f3XZWFSQ33za5tcQ2PUDOUEo4Y_6wQnJ01sJmrA_q5CBXpq_IBJ4NrQTpEyKxdqVt7pZvVOYglBxU');
+      if (token != null) {
+        AppLogger.debug('token:$token');
+        //final userId = FirebaseAuth.instance.currentUser?.uid;
+
+        await _usersCollection
+            .doc(userId)
+            .set({'fcmToken': token},SetOptions(merge: true));
+          }
+    }  catch (e) {
+      AppLogger.error('set token failed: ${e.toString()}');
+      throw Exception('set token failed: ${e.toString()}');
     }
   }
 }
