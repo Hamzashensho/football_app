@@ -14,6 +14,7 @@ class UserEntity {
   final String? zipCode;
   final String? favoriteTeamId;
   final UserNotifications? notifications;
+  final String? fcmToken;
 
   final String? pictureUrl;
 
@@ -30,7 +31,8 @@ class UserEntity {
     this.zipCode,
     this.favoriteTeamId,
     this.notifications,
-    this.pictureUrl
+    this.pictureUrl,
+    this.fcmToken,
   });
 
 }
