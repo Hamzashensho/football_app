@@ -14,7 +14,9 @@ class UserModel {
   final String favoriteTeamId;
   final UserNotifications notifications;
   final String pictureUrl;
-  UserModel( {
+  final String fcmToken;
+
+  UserModel({
     required this.userId,
     required this.firstName,
     required this.lastName,
@@ -28,23 +30,25 @@ class UserModel {
     required this.favoriteTeamId,
     required this.notifications,
     required this.pictureUrl,
+    required this.fcmToken,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String id) {
     return UserModel(
       userId: id,
-      firstName: map['firstName'],
-      lastName: map['lastName'],
+      firstName: map['firstName']??'',
+      lastName: map['lastName']??'',
       dob: DateTime.parse(map['dob']),
-      phoneNumber: map['phoneNumber'],
-      email: map['email'],
-      country: map['country'],
-      stateProvince: map['stateProvince'],
-      municipality: map['municipality'],
-      zipCode: map['zipCode'],
-      favoriteTeamId: map['favoriteTeamId'],
+      phoneNumber: map['phoneNumber']??'',
+      email: map['email']??'',
+      country: map['country']??'',
+      stateProvince: map['stateProvince']??'',
+      municipality: map['municipality']??'',
+      zipCode: map['zipCode']??'',
+      favoriteTeamId: map['favoriteTeamId']??'',
       notifications: UserNotifications.fromMap(map['notifications']),
-      pictureUrl: map['pictureUrl']
+      pictureUrl: map['pictureUrl']??'',
+        fcmToken:map['fcmToken']??''
     );
   }
 
@@ -79,7 +83,8 @@ class UserModel {
       zipCode: json['zipCode'],
       favoriteTeamId: json['favoriteTeamId'],
       notifications: UserNotifications.fromJson(json['notifications']),
-        pictureUrl: json['pictureUrl']
+        pictureUrl: json['pictureUrl'],
+      fcmToken: json['fcmToken']
     );
   }
 
@@ -98,6 +103,7 @@ class UserModel {
       'favoriteTeamId': favoriteTeamId,
       'notifications': notifications.toJson(),
       'pictureUrl':pictureUrl,
+      'fcmToken':fcmToken,
     };
   }
 
@@ -115,6 +121,7 @@ class UserModel {
     favoriteTeamId: favoriteTeamId,
     notifications: notifications,
     pictureUrl: pictureUrl,
+    fcmToken: fcmToken,
   );
 
 }

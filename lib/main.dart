@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,12 @@ import 'package:sport_app_user/core/routing/route_observer.dart';
 import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/routing/router.dart';
 import 'package:sport_app_user/core/utils/theme.dart';
+import 'package:sport_app_user/features/mobile/account/presentation/blocs/auth/auth_bloc.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/screens/splash_screen.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/pages/champion_management_page.dart';
 import 'package:sport_app_user/features/web/dashboard/presentation/pages/dashboard_overview_page.dart';
+import 'package:sport_app_user/features/web/login/presentation/screens/login_screen.dart';
 import 'package:sport_app_user/features/web/match_event_management/data/datasources/remote/mock_match_event_datasource.dart';
 import 'package:sport_app_user/features/web/match_event_management/data/repositories/match_event_repository_impl.dart';
 import 'package:sport_app_user/features/web/match_event_management/domain/usecases/get_match_events_usecase.dart';
@@ -17,11 +20,6 @@ import 'package:sport_app_user/features/web/match_event_management/presentation/
 import 'package:sport_app_user/features/web/match_event_management/presentation/pages/match_event_management_page.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/blocs/match_bloc.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/pages/match_management_page.dart';
-import 'package:sport_app_user/features/web/notification_management/data/datasources/remote/mock_notification_datasource.dart';
-import 'package:sport_app_user/features/web/notification_management/data/repositories/notification_repository_impl.dart';
-import 'package:sport_app_user/features/web/notification_management/domain/usecases/get_notifications_usecase.dart';
-import 'package:sport_app_user/features/web/notification_management/presentation/blocs/notification_bloc.dart';
-import 'package:sport_app_user/features/web/notification_management/presentation/pages/notification_management_page.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/blocs/player_bloc.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/pages/player_management_page.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/blocs/team_bloc.dart';
@@ -35,6 +33,7 @@ void main() async {
   final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -49,11 +48,13 @@ void main() async {
   }
   await init();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +62,10 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<UserBloc>(
-          create:
-              (context) => sl<UserBloc>(),
-        ),
-        BlocProvider<TeamBloc>(
-          create:
-              (context) => sl<TeamBloc>(),
-        ),
-        BlocProvider<PlayerBloc>(
-          create:
-              (context) => sl<PlayerBloc>(),
-        ),
-        BlocProvider<MatchBloc>(
-          create:
-              (context) => sl<MatchBloc>(),
-        ),
+        BlocProvider<UserBloc>(create: (context) => sl<UserBloc>()),
+        BlocProvider<TeamBloc>(create: (context) => sl<TeamBloc>()),
+        BlocProvider<PlayerBloc>(create: (context) => sl<PlayerBloc>()),
+        BlocProvider<MatchBloc>(create: (context) => sl<MatchBloc>()),
         BlocProvider<MatchEventBloc>(
           create:
               (context) => MatchEventBloc(
@@ -87,20 +76,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
         ),
-        BlocProvider<ChampionBloc>(
-          create:
-              (context) => sl<ChampionBloc>(),
-        ),
-        BlocProvider<NotificationBloc>(
-          create:
-              (context) => NotificationBloc(
-                getNotificationsUseCase: GetNotificationsUseCase(
-                  NotificationRepositoryImpl(
-                    mockNotificationDataSource: MockNotificationDataSource(),
-                  ),
-                ),
-              ),
-        ),
+        BlocProvider<ChampionBloc>(create: (context) => sl<ChampionBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -115,10 +91,17 @@ class MyApp extends StatelessWidget {
           '/match-events':
               (context) => const MatchEventManagementPage(matchId: 'match1'),
           '/champions': (context) => const ChampionManagementPage(),
-          '/notifications': (context) => const NotificationManagementPage(),
         },
         theme: AppTheme.lightTheme,
-        home: kIsWeb ? const AdminDashboardLayout() : const SplashScreen(),
+        home:
+            kIsWeb
+                ? user != null
+                    ? const AdminDashboardLayout()
+                    : BlocProvider<AuthBloc>(
+                      create: (context) => sl<AuthBloc>(),
+                      child: const DashboardLoginPage(),
+                    )
+                : const SplashScreen(),
       ),
     );
   }
@@ -189,10 +172,6 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout>
                     icon: Icon(Icons.emoji_events),
                     label: Text('Champions'),
                   ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.notifications),
-                    label: Text('Notifications'),
-                  ),
                 ],
               ),
               const VerticalDivider(thickness: 1, width: 1),
@@ -218,8 +197,6 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout>
         return const MatchManagementPage();
       case 5:
         return const ChampionManagementPage();
-      case 6:
-        return const NotificationManagementPage();
       default:
         return DashboardOverviewPage(onNavigate: _onItemTapped);
     }

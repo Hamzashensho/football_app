@@ -15,15 +15,15 @@ class MockUserDataSourceImpl implements MockUserDataSource {
 
   @override
   Future<List<UserEntity>> getUsers() async {
-    try {
+    //try {
       final snapshot = await _usersCollection.get();
       return snapshot.docs
           .map((doc) => UserModel.fromMap(doc.data(), doc.id).toEntity())
           .toList();
-    } catch (e) {
-      AppLogger.error('Get users Failed: $e');
-      throw Exception('Get users Failed: $e');
-    }
+    // } catch (e) {
+    //   AppLogger.error('Get users Failed: $e');
+    //   throw Exception('Get users Failed: $e');
+    // }
   }
 
 
