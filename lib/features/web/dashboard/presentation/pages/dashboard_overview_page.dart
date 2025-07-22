@@ -1,13 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
-import 'package:sport_app_user/features/web/notification_management/data/datasources/remote/mock_notification_datasource.dart';
 import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 import 'package:sport_app_user/features/web/match_management/domain/entities/match_entity.dart';
-import 'package:sport_app_user/features/web/notification_management/domain/entities/notification_entity.dart';
 import 'package:sport_app_user/features/web/user_management/presentation/blocs/user_bloc.dart';
 import 'package:sport_app_user/features/web/team_management/presentation/blocs/team_bloc.dart';
 import 'package:sport_app_user/features/web/player_management/presentation/blocs/player_bloc.dart';
@@ -36,16 +31,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
     context.read<PlayerBloc>().add(LoadPlayers());
     context.read<MatchBloc>().add(LoadMatches());
     context.read<ChampionBloc>().add(LoadChampions());
-    context.read<NotificationBloc>().add(LoadNotifications());
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId != null) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .set({'fcmToken': newToken}, SetOptions(merge: true));
-      }
-    });
+
   }
 
   @override
@@ -407,26 +393,62 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        
+
         if (state is MatchLoaded) {
-          // Count matches by status
-          final Map<String?, int> statusCounts = {
+          final matches = state.matches;
+
+          if (matches.isEmpty) {
+            return const SizedBox(
+              height: 300,
+              child: Center(child: Text('No matches available')),
+            );
+          }
+
+          // Initialize counts
+          final Map<String, int> statusCounts = {
             'Upcoming': 0,
             'Live': 0,
-            "Completed": 0,
+            'Completed': 0,
           };
-          
+
           for (var match in state.matches) {
-            statusCounts[match.status] = (statusCounts[match.status] ?? 0) + 1;
+            final trimmedStatus = match.status?.trim();
+            if (statusCounts.containsKey(trimmedStatus)) {
+              statusCounts[trimmedStatus??''] = (statusCounts[trimmedStatus] ?? 0) + 1;
+            } else {
+              debugPrint('[Warning] Unknown match status: "$trimmedStatus"');
+            }
           }
-          
+
+
+
+          final chartSections = <PieChartSectionData>[
+            PieChartSectionData(
+              value: statusCounts['Upcoming']!.toDouble(),
+              title: 'Upcoming',
+              color: Colors.blue,
+              radius: 60,
+            ),
+            PieChartSectionData(
+              value: statusCounts['Live']!.toDouble(),
+              title: 'Live',
+              color: Colors.orange,
+              radius: 60,
+            ),
+            PieChartSectionData(
+              value: statusCounts['Completed']!.toDouble(),
+              title: 'Completed',
+              color: Colors.green,
+              radius: 60,
+            ),
+          ];
+
           return Card(
             elevation: 2,
             child: InkWell(
               onTap: () {
-                // Navigate to Match Management page
                 if (widget.onNavigate != null) {
-                  widget.onNavigate!(4); // Index 4 is for Matches in the navigation rail
+                  widget.onNavigate!(4); // Navigate to Matches tab
                 } else {
                   Navigator.pushNamed(context, '/matches');
                 }
@@ -451,26 +473,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       height: 200,
                       child: PieChart(
                         PieChartData(
-                          sections: [
-                            PieChartSectionData(
-                              value: statusCounts['Upcoming']!.toDouble(),
-                              title: 'Upcoming',
-                              color: Colors.blue,
-                              radius: 60,
-                            ),
-                            PieChartSectionData(
-                              value: statusCounts['Live']!.toDouble(),
-                              title: 'In Progress',
-                              color: Colors.orange,
-                              radius: 60,
-                            ),
-                            PieChartSectionData(
-                              value: statusCounts['Completed']!.toDouble(),
-                              title: 'Completed',
-                              color: Colors.green,
-                              radius: 60,
-                            ),
-                          ],
+                          sections: chartSections,
                           sectionsSpace: 2,
                           centerSpaceRadius: 40,
                         ),
@@ -482,7 +485,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       children: [
                         _buildLegendItem('Upcoming', Colors.blue),
                         const SizedBox(width: 16),
-                        _buildLegendItem('In Progress', Colors.orange),
+                        _buildLegendItem('Live', Colors.orange),
                         const SizedBox(width: 16),
                         _buildLegendItem('Completed', Colors.green),
                       ],
@@ -499,11 +502,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                           ),
                         ),
                         SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_forward,
-                          size: 16,
-                          color: Colors.purple,
-                        ),
+                        Icon(Icons.arrow_forward, size: 16, color: Colors.purple),
                       ],
                     ),
                   ],
@@ -512,7 +511,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             ),
           );
         }
-        
+
         return const SizedBox(
           height: 300,
           child: Center(child: Text('No match data available')),
@@ -530,31 +529,36 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        
+
         if (state is TeamLoaded) {
-          // Sort teams by goal count for the chart
-          final teams = List<TeamEntity>.from(state.teams);
-          teams.sort((a, b) => (b.goalCount ?? 0).compareTo(a.goalCount ?? 0));
-          
-          // Take top 5 teams or all if less than 5
+          final teams = state.teams.where((t) => t.goalCount != null).toList();
+
+          if (teams.isEmpty) {
+            return const SizedBox(
+              height: 300,
+              child: Center(child: Text('No team data available')),
+            );
+          }
+
+          // Sort by goal count descending and take top 5
+          teams.sort((a, b) => b.goalCount!.compareTo(a.goalCount!));
           final topTeams = teams.take(5).toList();
-          
+
+          final maxGoal = topTeams.first.goalCount!.toDouble();
+          final maxY = maxGoal < 5 ? 10 : maxGoal * 1.2;
+
           return Card(
             elevation: 2,
             child: InkWell(
               onTap: () {
-                // Navigate to Team Management page
-                if (widget.onNavigate != null) {
-                  widget.onNavigate!(2); // Index 2 is for Teams in the navigation rail
-                } else {
-                  Navigator.pushNamed(context, '/teams');
-                }
+                widget.onNavigate?.call(2) ?? Navigator.pushNamed(context, '/teams');
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -566,19 +570,19 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       ],
                     ),
                     const SizedBox(height: 16),
+
+                    // Bar Chart
                     SizedBox(
                       height: 200,
                       child: BarChart(
                         BarChartData(
                           alignment: BarChartAlignment.spaceAround,
-                          maxY: topTeams.isNotEmpty 
-                              ? (topTeams.first.goalCount?.toDouble() ?? 0) * 1.2 
-                              : 10,
+                          maxY: maxY.toDouble(),
                           titlesData: FlTitlesData(
                             leftTitles: AxisTitles(
                               sideTitles: SideTitles(
                                 showTitles: true,
-                                reservedSize: 30,
+                                reservedSize: 50,
                                 getTitlesWidget: (value, meta) {
                                   return SideTitleWidget(
                                     meta: meta,
@@ -604,12 +608,8 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                                 },
                               ),
                             ),
-                            rightTitles: const AxisTitles(
-
-                            ),
-                            topTitles: const AxisTitles(
-
-                            ),
+                            rightTitles: const AxisTitles(),
+                            topTitles: const AxisTitles(),
                           ),
                           borderData: FlBorderData(show: false),
                           barGroups: topTeams.asMap().entries.map((entry) {
@@ -619,9 +619,9 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                               x: index,
                               barRods: [
                                 BarChartRodData(
-                                  toY: team.goalCount?.toDouble() ?? 0,
+                                  toY: team.goalCount!.toDouble(),
                                   color: Colors.green,
-                                  width: 20,
+                                  //width: 20,
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4),
                                     topRight: Radius.circular(4),
@@ -633,7 +633,10 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
+                    // Footer
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -658,7 +661,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             ),
           );
         }
-        
+
         return const SizedBox(
           height: 300,
           child: Center(child: Text('No team data available')),
@@ -699,8 +702,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       Expanded(child: _buildUpcomingMatchesTable()),
                       const SizedBox(width: 16),
                       Expanded(child: _buildRecentMatchResultsTable()),
-                      const SizedBox(width: 16),
-                      Expanded(child: _buildLatestNotificationsPanel()),
+
                     ],
                   )
                 : Column(
@@ -708,8 +710,6 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       _buildUpcomingMatchesTable(),
                       const SizedBox(height: 16),
                       _buildRecentMatchResultsTable(),
-                      const SizedBox(height: 16),
-                      _buildLatestNotificationsPanel(),
                     ],
                   );
           },
@@ -730,7 +730,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
 
         if (state is MatchLoaded) {
           final List<MatchEntity> upcomingMatches = state.matches
-              .where((match) => match.status == MatchStatus.Upcoming)
+              .where((match) => match.status?.trim() == 'Upcoming')
               .toList()
             ..sort((a, b) => a.date.compareTo(b.date));
 
@@ -747,14 +747,14 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                   _buildSectionHeader(
                     context,
                     icon: Icons.sports_soccer,
-                    title: "Upcoming Matches",
+                    title: 'Upcoming Matches',
                     onViewAll: () {
                       widget.onNavigate?.call(4) ?? Navigator.pushNamed(context, '/matches');
                     },
                   ),
                   const SizedBox(height: 16),
                   if (nextMatches.isEmpty)
-                    _buildEmptyState("No upcoming matches")
+                    _buildEmptyState('No upcoming matches')
                   else
                     ListView.separated(
                       shrinkWrap: true,
@@ -793,14 +793,14 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
         if (state is MatchLoaded) {
           // Filter and sort completed matches
           final List<MatchEntity>completedMatches = state.matches
-              .where((MatchEntity match) => match.status == MatchStatus.Completed)
+              .where((MatchEntity match) => match.status?.trim() == 'Completed')
               .toList();
           
           completedMatches.sort((a, b) => b.date.compareTo(a.date));
           
           // Take last 5 matches
           final recentMatches = completedMatches.take(5).toList();
-          
+          final List<TeamEntity> teams=context.read<TeamBloc>().teamsList;
           return Card(
             elevation: 2,
             child: Padding(
@@ -849,7 +849,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                           itemBuilder: (context, index) {
                             final match = recentMatches[index];
                             return ListTile(
-                              title: Text('${match.teamAId} vs ${match.teamBId}'),
+                              title: Text('${teams.firstWhere((e)=>e.teamId==match.teamAId).name} vs ${teams.firstWhere((e)=>e.teamId==match.teamBId).name}'),
                               subtitle: Text(
                                 '${match.date.toString().substring(0, 10)} at ${match.stadiumName}',
                               ),
@@ -882,155 +882,8 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
     );
   }
 
-  Widget _buildLatestNotificationsPanel() {
-    return BlocBuilder<NotificationBloc, NotificationState>(
-      builder: (context, state) {
-        if (state is NotificationLoading) {
-          return const SizedBox(
-            height: 300,
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        
-        if (state is NotificationLoaded) {
-          // Sort notifications by date (most recent first)
-          final notifications = List<NotificationEntity>.from(state.notifications);
-          notifications.sort((a, b) => b.datetime.compareTo(a.datetime));
-          
-          // Take latest 5 notifications
-          final latestNotifications = notifications.take(5).toList();
-          
-          return Card(
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Latest Notifications',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          // Navigate to Notification Management page
-                          if (widget.onNavigate != null) {
-                            widget.onNavigate!(6); // Index 6 is for Notifications in the navigation rail
-                          } else {
-                            Navigator.pushNamed(context, '/notifications');
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(4),
-                        child: const Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Text(
-                            'View All',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  latestNotifications.isEmpty
-                      ? const Center(child: Text('No notifications'))
-                      : ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: latestNotifications.length,
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemBuilder: (context, index) {
-                            final notification = latestNotifications[index];
-                            return ListTile(
-                              leading: _getNotificationIcon(notification.type),
-                              title: Text(notification.title ?? 'Notification'),
-                              subtitle: Text(notification.message),
-                              trailing: Text(
-                                _formatDateTime(notification.datetime),
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              onTap: () {
-                                // Navigate to notification details or notification management
-                                if (widget.onNavigate != null) {
-                                  widget.onNavigate!(6); // Index 6 is for Notifications in the navigation rail
-                                } else {
-                                  Navigator.pushNamed(context, '/notifications');
-                                }
-                              },
-                            );
-                          },
-                        ),
-                ],
-              ),
-            ),
-          );
-        }
-        
-        return const SizedBox(
-          height: 300,
-          child: Center(child: Text('No notification data available')),
-        );
-      },
-    );
-  }
 
-  Widget _getNotificationIcon(NotificationType type) {
-    IconData iconData;
-    Color iconColor;
-    
-    switch (type) {
-      case NotificationType.matchReminder:
-        iconData = Icons.sports_soccer;
-        iconColor = Colors.green;
-        break;
-      case NotificationType.scoreUpdate:
-        iconData = Icons.scoreboard;
-        iconColor = Colors.blue;
-        break;
-      case NotificationType.favoriteTeamNews:
-        iconData = Icons.favorite;
-        iconColor = Colors.red;
-        break;
-      case NotificationType.systemAlert:
-        iconData = Icons.warning;
-        iconColor = Colors.orange;
-        break;
-      case NotificationType.promotional:
-        iconData = Icons.campaign;
-        iconColor = Colors.purple;
-        break;
-      default:
-        iconData = Icons.notifications;
-        iconColor = Colors.grey;
-        break;
-    }
-    
-    return CircleAvatar(
-      backgroundColor: iconColor.withValues(alpha: 0.2),
-      child: Icon(iconData, color: iconColor, size: 20),
-    );
-  }
 
-  String _formatDateTime(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-    
-    if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
   Widget _buildSectionHeader(BuildContext context, {
     required IconData icon,
     required String title,
@@ -1059,34 +912,31 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
     );
   }
   Widget _buildMatchTile(MatchEntity match) {
-    return InkWell(
-      onTap: () => widget.onNavigate?.call(4) ?? Navigator.pushNamed(context, '/matches'),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            const Icon(Icons.calendar_today_outlined, size: 20, color: Colors.blueGrey),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${match.teamAId} vs ${match.teamBId}',
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${match.date.toLocal().toString().split(' ')[0]} • ${match.stadiumName}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                  ),
-                ],
-              ),
+    final List<TeamEntity> teams=context.read<TeamBloc>().teamsList;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const Icon(Icons.calendar_today_outlined, size: 20, color: Colors.blueGrey),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${teams.firstWhere((e)=>e.teamId==match.teamAId).name} vs ${teams.firstWhere((e)=>e.teamId==match.teamBId).name}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${match.date.toLocal().toString().split(' ')[0]} • ${match.stadiumName}',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                ),
+              ],
             ),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-          ],
-        ),
+          ),
+          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+        ],
       ),
     );
   }
