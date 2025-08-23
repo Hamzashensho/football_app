@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class EntityDialog extends StatelessWidget {
@@ -22,9 +24,11 @@ class EntityDialog extends StatelessWidget {
       title: Text(title),
       content: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: maxWidth ?? MediaQuery.of(context).size.width * 0.4,
-          minWidth: 300,
-        ),
+    maxWidth: maxWidth ?? MediaQuery.of(context).size.width * 0.4,
+    minWidth: min(
+    300,
+    maxWidth ?? MediaQuery.of(context).size.width * 0.4,
+        ),),
         child: SingleChildScrollView(
           child: form,
         ),

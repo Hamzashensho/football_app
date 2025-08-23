@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sport_app_user/core/services/shared_prefs_service.dart';
@@ -14,6 +13,12 @@ import 'package:sport_app_user/features/mobile/account/domain/usecases/sign_out.
 import 'package:sport_app_user/features/mobile/account/domain/usecases/sign_up_with_email.dart';
 import 'package:sport_app_user/features/mobile/account/domain/usecases/get_current_user.dart';
 import 'package:sport_app_user/features/mobile/account/presentation/blocs/auth/auth_bloc.dart';
+import 'package:sport_app_user/features/mobile/profile/data/datasources/profile_reomte_datasource.dart';
+import 'package:sport_app_user/features/mobile/profile/data/repositories/profile_repository_impl.dart';
+import 'package:sport_app_user/features/mobile/profile/domain/repositories/profile_repository.dart';
+import 'package:sport_app_user/features/mobile/profile/domain/usecases/edit_user_usecase.dart';
+import 'package:sport_app_user/features/mobile/profile/domain/usecases/get_user_usecase.dart';
+import 'package:sport_app_user/features/mobile/profile/presentation/blocs/profile_bloc.dart';
 import 'package:sport_app_user/features/web/champion_management/data/datasources/remote/remote_champion_datasource.dart';
 import 'package:sport_app_user/features/web/champion_management/data/repositories/champion_repository_impl.dart';
 import 'package:sport_app_user/features/web/champion_management/domain/repositories/champion_repository.dart';
@@ -22,6 +27,14 @@ import 'package:sport_app_user/features/web/champion_management/domain/usecases/
 import 'package:sport_app_user/features/web/champion_management/domain/usecases/edit_champion_usecase.dart';
 import 'package:sport_app_user/features/web/champion_management/domain/usecases/get_champions_usecase.dart';
 import 'package:sport_app_user/features/web/champion_management/presentation/blocs/champion_bloc.dart';
+import 'package:sport_app_user/features/web/match_event_management/data/datasources/remote/mock_match_event_datasource.dart';
+import 'package:sport_app_user/features/web/match_event_management/data/repositories/match_event_repository_impl.dart';
+import 'package:sport_app_user/features/web/match_event_management/domain/repositories/match_event_repository.dart';
+import 'package:sport_app_user/features/web/match_event_management/domain/usecases/add_match_event_usecase.dart';
+import 'package:sport_app_user/features/web/match_event_management/domain/usecases/delete_match_event_usecase.dart';
+import 'package:sport_app_user/features/web/match_event_management/domain/usecases/get_match_events_usecase.dart';
+import 'package:sport_app_user/features/web/match_event_management/domain/usecases/update_match_event_usecase.dart';
+import 'package:sport_app_user/features/web/match_event_management/presentation/blocs/match_event_bloc.dart';
 import 'package:sport_app_user/features/web/match_management/data/datasources/remote/remote_match_datasource.dart';
 import 'package:sport_app_user/features/web/match_management/data/repositories/match_repository_impl.dart';
 import 'package:sport_app_user/features/web/match_management/domain/repositories/match_repository.dart';
@@ -63,9 +76,7 @@ Future<void> init() async {
   sl
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
-    ..registerLazySingleton<GoogleSignIn>(GoogleSignIn.new)
-    ..registerLazySingleton<FacebookAuth>(() => FacebookAuth.instance);
-
+    ..registerLazySingleton<GoogleSignIn>(GoogleSignIn.new);
   // Data Sources
   sl
     ..registerLazySingleton<AuthRemoteDataSource>(
@@ -82,7 +93,11 @@ Future<void> init() async {
       RemoteMatchDataSourceImpl.new,
     )
     ..registerLazySingleton<MockPlayerDataSource>(MockPlayerDataSourceImpl.new)
-    ..registerLazySingleton<MockUserDataSource>(MockUserDataSourceImpl.new);
+    ..registerLazySingleton<MockUserDataSource>(MockUserDataSourceImpl.new)
+    ..registerLazySingleton<RemoteMatchEventDataSource>(
+      RemoteMatchEventDataSourceImp.new,
+    )
+  ..registerLazySingleton<ProfileRemoteDataSource>(ProfileRemoteDataSourceImpl.new);
 
   // Repository
   sl
@@ -103,7 +118,11 @@ Future<void> init() async {
     )
     ..registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(mockUserDataSource: sl()),
-    );
+    )
+    ..registerLazySingleton<MatchEventRepository>(
+      () => MatchEventRepositoryImpl(remoteDataSource: sl()),
+    )
+  ..registerLazySingleton<ProfileRepository>(()=>ProfileRepositoryImpl(remoteDataSource: sl()));
 
   // Use Cases
   sl
@@ -128,7 +147,13 @@ Future<void> init() async {
     ..registerLazySingleton(() => AddPlayerUseCase(sl()))
     ..registerLazySingleton(() => EditPlayerUseCase(sl()))
     ..registerLazySingleton(() => DeletePlayerUseCase(sl()))
-    ..registerLazySingleton(() => GetUsersUseCase(sl()));
+    ..registerLazySingleton(() => GetUsersUseCase(sl()))
+    ..registerLazySingleton(() => GetMatchEventsUseCase(sl()))
+    ..registerLazySingleton(() => AddMatchEventsUseCase(sl()))
+    ..registerLazySingleton(() => UpdateMatchEventsUseCase(sl()))
+    ..registerLazySingleton(() => DeleteMatchEventsUseCase(sl()))
+  ..registerLazySingleton(()=>EditUserUseCase(sl()))
+  ..registerLazySingleton(()=>GetUserProfileUseCase(sl()));
 
   // Bloc
   sl
@@ -137,5 +162,7 @@ Future<void> init() async {
     ..registerLazySingleton(TeamBloc.new)
     ..registerLazySingleton(MatchBloc.new)
     ..registerLazySingleton(PlayerBloc.new)
-    ..registerLazySingleton(UserBloc.new);
+    ..registerLazySingleton(UserBloc.new)
+    ..registerLazySingleton(MatchEventBloc.new)
+  ..registerLazySingleton(ProfileBloc.new);
 }

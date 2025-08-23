@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sport_app_user/features/web/match_event_management/presentation/pages/match_event_management_page.dart';
 import 'package:sport_app_user/features/web/match_management/domain/entities/match_entity.dart';
 import 'package:sport_app_user/features/web/champion_management/domain/entities/champion_entity.dart';
 import 'package:sport_app_user/features/web/match_management/presentation/widgets/match_detail_row.dart';
@@ -50,6 +51,9 @@ class MatchTile extends StatelessWidget {
             onPressed: () => bloc.add(DeleteMatch(matchId: match.matchId)),
           ),
           const Icon(Icons.expand_more),
+          TextButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>MatchEventManagementPage(matchId: match.matchId,)));
+          }, child: const Text('Show Events'))
         ],
       ),
       children: [

@@ -22,6 +22,8 @@ class MatchBloc extends Bloc<MatchEvent, MatchState> {
     on<DeleteMatch>(_onDeleteMatch);
   }
 
+  List<MatchEntity> matchesList = [];
+
   Future<void> _onLoadMatches(
     LoadMatches event,
     Emitter<MatchState> emit,
@@ -30,10 +32,10 @@ class MatchBloc extends Bloc<MatchEvent, MatchState> {
     final useCase = await GetMatchesUseCase(
       sl<MatchRepository>(),
     ).call(NoParams());
-    useCase.fold(
-      (failure) => emit(MatchError(failure.message)),
-      (matches) => emit(MatchLoaded(matches)),
-    );
+    useCase.fold((failure) => emit(MatchError(failure.message)), (matches) {
+      matchesList = matches;
+      emit(MatchLoaded(matches));
+    });
   }
 
   Future<void> _onAddMatch(AddMatch event, Emitter<MatchState> emit) async {

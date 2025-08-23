@@ -5,23 +5,24 @@ import 'package:equatable/equatable.dart';
 import 'package:sport_app_user/features/web/match_event_management/domain/entities/match_event_entity.dart';
 import 'package:sport_app_user/features/web/match_event_management/domain/repositories/match_event_repository.dart';
 
-class GetMatchEventsUseCase implements UseCase<List<MatchEventEntity>, MatchEventsParams> {
+class GetMatchEventsUseCase implements UseCase<List<MatchEventEntity>, String> {
   final MatchEventRepository matchEventRepository;
 
   GetMatchEventsUseCase(this.matchEventRepository);
 
   @override
-  Future<Either<AppException,List<MatchEventEntity>>> call(MatchEventsParams params) async {
-    return await matchEventRepository.getMatchEvents(params.matchId);
+  Future<Either<AppException,List<MatchEventEntity>>> call(String matchId) async {
+    return await matchEventRepository.getMatchEvents(matchId);
   }
 }
 
 class MatchEventsParams extends Equatable {
-  final String matchId;
+  final String? matchId;
+  final String? matchEventId;
 
-  const MatchEventsParams({required this.matchId});
+  const MatchEventsParams({ this.matchId,this.matchEventId});
 
   @override
-  List<Object?> get props => [matchId];
+  List<Object?> get props => [matchId,matchEventId];
 }
 

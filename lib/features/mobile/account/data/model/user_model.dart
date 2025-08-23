@@ -1,12 +1,9 @@
 import 'package:sport_app_user/features/mobile/account/domain/entities/user_entity.dart';
 
-class UserModel {
+class UserModel extends UserEntity {
   final String userId;
-  final String firstName;
-  final String lastName;
   final DateTime dob;
   final String phoneNumber;
-  final String email;
   final String country;
   final String stateProvince;
   final String municipality;
@@ -18,11 +15,11 @@ class UserModel {
 
   UserModel({
     required this.userId,
-    required this.firstName,
-    required this.lastName,
+    required super.firstName,
+    required super.lastName,
     required this.dob,
     required this.phoneNumber,
-    required this.email,
+    required super.email,
     required this.country,
     required this.stateProvince,
     required this.municipality,
@@ -31,24 +28,36 @@ class UserModel {
     required this.notifications,
     required this.pictureUrl,
     required this.fcmToken,
-  });
+  }) : super(
+    uid: userId,
+    dob: dob,
+    phoneNumber: phoneNumber,
+    country: country,
+    stateProvince: stateProvince,
+    municipality: municipality,
+    zipCode: zipCode,
+    favoriteTeamId: favoriteTeamId,
+    notifications: notifications,
+    pictureUrl: pictureUrl,
+    fcmToken: fcmToken,
+  );
 
   factory UserModel.fromMap(Map<String, dynamic> map, String id) {
     return UserModel(
       userId: id,
-      firstName: map['firstName']??'',
-      lastName: map['lastName']??'',
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
       dob: DateTime.parse(map['dob']),
-      phoneNumber: map['phoneNumber']??'',
-      email: map['email']??'',
-      country: map['country']??'',
-      stateProvince: map['stateProvince']??'',
-      municipality: map['municipality']??'',
-      zipCode: map['zipCode']??'',
-      favoriteTeamId: map['favoriteTeamId']??'',
+      phoneNumber: map['phoneNumber'] ?? '',
+      email: map['email'] ?? '',
+      country: map['country'] ?? '',
+      stateProvince: map['stateProvince'] ?? '',
+      municipality: map['municipality'] ?? '',
+      zipCode: map['zipCode'] ?? '',
+      favoriteTeamId: map['favoriteTeamId'] ?? '',
       notifications: UserNotifications.fromMap(map['notifications']),
-      pictureUrl: map['pictureUrl']??'',
-        fcmToken:map['fcmToken']??''
+      pictureUrl: map['pictureUrl'] ?? '',
+      fcmToken: map['fcmToken'] ?? '',
     );
   }
 
@@ -65,7 +74,8 @@ class UserModel {
       'zipCode': zipCode,
       'favoriteTeamId': favoriteTeamId,
       'notifications': notifications.toMap(),
-      'pictureUrl':pictureUrl,
+      'pictureUrl': pictureUrl,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -83,8 +93,8 @@ class UserModel {
       zipCode: json['zipCode'],
       favoriteTeamId: json['favoriteTeamId'],
       notifications: UserNotifications.fromJson(json['notifications']),
-        pictureUrl: json['pictureUrl'],
-      fcmToken: json['fcmToken']
+      pictureUrl: json['pictureUrl'],
+      fcmToken: json['fcmToken'],
     );
   }
 
@@ -102,8 +112,8 @@ class UserModel {
       'zipCode': zipCode,
       'favoriteTeamId': favoriteTeamId,
       'notifications': notifications.toJson(),
-      'pictureUrl':pictureUrl,
-      'fcmToken':fcmToken,
+      'pictureUrl': pictureUrl,
+      'fcmToken': fcmToken,
     };
   }
 
@@ -123,7 +133,6 @@ class UserModel {
     pictureUrl: pictureUrl,
     fcmToken: fcmToken,
   );
-
 }
 
 class UserNotifications {
@@ -134,8 +143,8 @@ class UserNotifications {
 
   factory UserNotifications.fromMap(Map<String, dynamic> map) {
     return UserNotifications(
-      app: map['app'],
-      favoriteTeam: map['favoriteTeam'],
+      app: map['app'] ?? false,
+      favoriteTeam: map['favoriteTeam'] ?? false,
     );
   }
 
@@ -148,8 +157,8 @@ class UserNotifications {
 
   factory UserNotifications.fromJson(Map<String, dynamic> json) {
     return UserNotifications(
-      app: json['app'],
-      favoriteTeam: json['favoriteTeam'],
+      app: json['app'] ?? false,
+      favoriteTeam: json['favoriteTeam'] ?? false,
     );
   }
 

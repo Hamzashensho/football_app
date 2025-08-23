@@ -30,3 +30,27 @@ class MatchEventError extends MatchEventState {
   List<Object> get props => [message];
 }
 
+
+class AddMatchEventSuccess extends MatchEventState{}
+class AddMatchEventLoading extends MatchEventState{}
+class AddMatchEventFailed extends MatchEventState{
+  final String message;
+
+  const AddMatchEventFailed(this.message);
+}
+
+class EditMatchEventSuccess extends MatchEventState{}
+class EditMatchEventLoading extends MatchEventState{}
+class EditMatchEventFailed extends MatchEventState{
+  final String message;
+
+  const EditMatchEventFailed(this.message);
+}
+
+class DeleteMatchEventSuccess extends MatchEventState{}
+class DeleteMatchEventLoading extends MatchEventState{}
+class DeleteMatchEventFailed extends MatchEventState{
+  final String message;
+
+  const DeleteMatchEventFailed(this.message);
+}

@@ -26,6 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ResetPassword>(_onResetPassword);
   }
 
+
   Future<void> _onFacebookSignIn(
     SignInWithFacebookRequested event,
     Emitter<AuthState> emit,

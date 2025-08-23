@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:sport_app_user/core/utils/logger.dart';
 import 'package:sport_app_user/features/mobile/account/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,31 +91,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> signInWithFacebook() async {
-    try {
-      final result = await FacebookAuth.instance.login();
-
-      if (result.status != LoginStatus.success || result.accessToken == null) {
-        throw Exception('Facebook sign in failed: ${result.message}');
-      }
-
-      final credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
-      final user = userCredential.user;
-      if (user == null) throw Exception('User is null after Facebook sign in');
-
-      final userModel = _createUserModel(user);
-      final docExists = (await _usersCollection.doc(user.uid).get()).exists;
-
-      if (!docExists) {
-        await _usersCollection.doc(user.uid).set(userModel.toJson());
-      }
-
-      return userModel;
-    } on FirebaseAuthException catch (e) {
-      throw Exception('Facebook sign in failed: ${e.message}');
-    } catch (e) {
-      throw Exception('Unexpected error during Facebook sign in: $e');
-    }
+    throw UnimplementedError();
+    // try {
+    //   final result = await FacebookAuth.instance.login();
+    //
+    //   if (result.status != LoginStatus.success || result.accessToken == null) {
+    //     throw Exception('Facebook sign in failed: ${result.message}');
+    //   }
+    //
+    //   final credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
+    //   final userCredential = await _firebaseAuth.signInWithCredential(credential);
+    //   final user = userCredential.user;
+    //   if (user == null) throw Exception('User is null after Facebook sign in');
+    //
+    //   final userModel = _createUserModel(user);
+    //   final docExists = (await _usersCollection.doc(user.uid).get()).exists;
+    //
+    //   if (!docExists) {
+    //     await _usersCollection.doc(user.uid).set(userModel.toJson());
+    //   }
+    //
+    //   return userModel;
+    // } on FirebaseAuthException catch (e) {
+    //   throw Exception('Facebook sign in failed: ${e.message}');
+    // } catch (e) {
+    //   throw Exception('Unexpected error during Facebook sign in: $e');
+    // }
   }
 
 
