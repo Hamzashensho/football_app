@@ -66,16 +66,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<TeamBloc>(create: (context) => sl<TeamBloc>()),
         BlocProvider<PlayerBloc>(create: (context) => sl<PlayerBloc>()),
         BlocProvider<MatchBloc>(create: (context) => sl<MatchBloc>()),
-        BlocProvider<MatchEventBloc>(
-          create:
-              (context) => MatchEventBloc(
-                getMatchEventsUseCase: GetMatchEventsUseCase(
-                  MatchEventRepositoryImpl(
-                    mockMatchEventDataSource: MockMatchEventDataSource(),
-                  ),
-                ),
-              ),
-        ),
+        BlocProvider<MatchEventBloc>(create: (context) => sl<MatchEventBloc>()),
         BlocProvider<ChampionBloc>(create: (context) => sl<ChampionBloc>()),
       ],
       child: MaterialApp(

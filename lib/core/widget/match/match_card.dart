@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:sport_app_user/core/constants/dummy_data.dart';
 import 'package:sport_app_user/core/routing/route_paths.dart';
 import 'package:sport_app_user/core/utils/size_config.dart';
+import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 
 class MatchCard extends StatelessWidget {
+  final String matchId;
   final String date;
   final String time;
   final String stadium;
   final String group;
   final String status;
-  final TeamModel teamA;
-  final TeamModel teamB;
+  final TeamEntity teamA;
+  final TeamEntity teamB;
   final String score;
 
   const MatchCard({
@@ -23,6 +25,7 @@ class MatchCard extends StatelessWidget {
     required this.teamA,
     required this.teamB,
     required this.score,
+    required this.matchId,
   });
 
   @override
@@ -35,6 +38,7 @@ class MatchCard extends StatelessWidget {
           'group':group,
           'teamA':teamA,
           'teamB':teamB,
+          'matchId':matchId,
         });
       },
       child: Container(
@@ -58,7 +62,7 @@ class MatchCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(date,
+                  Text(date.split(' ')[0],
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white)),
 
@@ -133,10 +137,10 @@ class MatchCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTeam(TeamModel team) {
+  Widget _buildTeam(TeamEntity team) {
     return Column(
       children: [
-        Image.asset(team.logo, height: SizeConfig.heightMultiplier*4, width: SizeConfig.widthMultiplier*9),
+        Image.asset(dummyTeams.first.logo, height: SizeConfig.heightMultiplier*4, width: SizeConfig.widthMultiplier*9),
          SizedBox(height: SizeConfig.heightMultiplier*1.2),
         SizedBox(
           width: SizeConfig.widthMultiplier*15,

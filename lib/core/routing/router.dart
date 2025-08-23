@@ -10,6 +10,7 @@ import 'package:sport_app_user/features/mobile/home/presentation/screens/home_sc
 import 'package:sport_app_user/features/mobile/match_detai/presentation/screens/match_screen_detail.dart';
 import 'package:sport_app_user/features/mobile/match_group_detail/presentation/screens/match_list_screen.dart';
 import 'package:sport_app_user/features/mobile/news/presentation/screens/news_detail_screen.dart';
+import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -36,10 +37,12 @@ class AppRoutes {
         return _buildRoute(
           MatchDetailScreen(
             group: args['group'],
-            teamA: args['teamA'] as TeamModel,
-            teamB: args['teamB'] as TeamModel,
+            teamA: args['teamA'] as TeamEntity,
+            teamB: args['teamB'] as TeamEntity,
             score: args['score'],
             stadium: args['stadium'],
+            matchId: args['matchId'],
+
           ),
           settings
         );

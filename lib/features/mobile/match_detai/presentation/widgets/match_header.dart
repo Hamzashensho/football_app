@@ -4,10 +4,11 @@ import 'package:sport_app_user/core/constants/assets.dart';
 import 'package:sport_app_user/core/constants/dummy_data.dart';
 import 'package:sport_app_user/core/utils/size_config.dart';
 import 'package:sport_app_user/features/mobile/match_detai/presentation/widgets/time_progress_indecator.dart';
+import 'package:sport_app_user/features/web/team_management/domain/entities/team_entity.dart';
 
 class MatchHeader extends StatelessWidget {
-  final TeamModel teamA;
-  final TeamModel teamB;
+  final TeamEntity teamA;
+  final TeamEntity teamB;
   final String stadium;
   final String group;
   final String score;
@@ -34,7 +35,9 @@ class MatchHeader extends StatelessWidget {
         Positioned(
           top: SizeConfig.heightMultiplier * 3.5,
           left: SizeConfig.widthMultiplier * 6,
-          child: const Icon(Icons.arrow_back, color: Colors.white),
+          child: InkWell(onTap: (){
+            Navigator.pop(context);
+          },child: const Icon(Icons.arrow_back, color: Colors.white)),
         ),
         Positioned.fill(
           child: Column(
@@ -52,7 +55,7 @@ class MatchHeader extends StatelessWidget {
                   Column(
                     children: [
                       Image.asset(
-                        teamA.logo,
+                        dummyTeams[2].logo,
                         height: SizeConfig.heightMultiplier * 5,
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier * 1.8),
@@ -78,7 +81,7 @@ class MatchHeader extends StatelessWidget {
                   Column(
                     children: [
                       Image.asset(
-                        teamB.logo,
+                        dummyTeams[3].logo,
                         height: SizeConfig.heightMultiplier * 5,
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier * 1.8),

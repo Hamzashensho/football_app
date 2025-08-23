@@ -18,7 +18,7 @@ class MatchEventEntity {
   final String teamId; // FK to TeamEntity (team that committed/benefited from event)
   final String matchId; // FK to MatchEntity
 
-  MatchEventEntity({
+   MatchEventEntity({
     required this.matchEventId,
     required this.eventType,
     required this.minute,

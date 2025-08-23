@@ -18,10 +18,10 @@ class SettingTabView extends StatelessWidget {
 
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
 
-            // Notification Settings
-            const SectionTitle(title: 'Notification Settings'),
-            const NotificationToggle(title: ' Receive notifications for your favorite team'),
-            const NotificationToggle(title: ' Receive app notifications'),
+            // // Notification Settings
+            // const SectionTitle(title: 'Notification Settings'),
+            // const NotificationToggle(title: ' Receive notifications for your favorite team'),
+            // const NotificationToggle(title: ' Receive app notifications'),
 
             SizedBox(height: 3 * SizeConfig.heightMultiplier),
 
